@@ -1,0 +1,532 @@
+/* akshat-website — design system from DESIGN.md (D-001–D-014 confirmed)
+   Monochrome editorial: ink/gray/mist/paper, Raleway 300 display, Roboto body,
+   hairline structure, no shadows, sharp-or-pill radii. */
+
+:root {
+  --color-ink: #000000;
+  --color-gray: #808080;
+  --color-mist: #e6e6e6;
+  --color-paper: #ffffff;
+
+  --font-display: 'Raleway', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Roboto', ui-sans-serif, system-ui, sans-serif;
+
+  --text-display: clamp(56px, 9vw, 112px);
+  --text-heading: clamp(40px, 6vw, 64px);
+  --text-heading-sm: 32px;
+  --text-subheading: 22px;
+  --text-body: 17px;
+  --text-body-sm: 15px;
+  --text-kicker: 12px;
+  --text-caption: 13px;
+
+  --space-1: 4px;  --space-2: 8px;   --space-3: 12px;  --space-4: 16px;
+  --space-6: 24px; --space-8: 32px;  --space-12: 48px; --space-16: 64px;
+  --space-24: 96px; --space-32: 128px;
+
+  --page-max-width: 1080px;
+  --radius-pill: 9999px;
+
+  --ease-glide: cubic-bezier(0.19, 1, 0.22, 1);
+  --duration-hover: 0.15s;
+  --duration-reveal: 0.8s;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-ink);
+}
+
+/* Aurora atmosphere (D-021) — media layer only, never UI fill.
+   Fixed pseudo-element instead of background-attachment for iOS. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background: #000 url('/assets/aurora-moon.jpg') center / cover no-repeat;
+}
+
+/* Even scrim so white type holds contrast over any patch of sky */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+/* Solid paper surfaces floating over the sky */
+.sheet { background: var(--color-paper); }
+
+.container {
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  padding-left: var(--space-6);
+  padding-right: var(--space-6);
+}
+
+::selection { background: var(--color-ink); color: var(--color-paper); }
+
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+}
+
+/* ---------- Navigation ---------- */
+
+.site-header {
+  border-bottom: 1px solid var(--color-mist);
+  background: var(--color-paper);
+}
+
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  padding-top: var(--space-3);
+  padding-bottom: var(--space-3);
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--color-ink);
+  text-decoration: none;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.site-nav { display: flex; gap: var(--space-6); }
+
+.site-nav a {
+  font-size: 14px;
+  white-space: nowrap;
+  color: var(--color-gray);
+  text-decoration: none;
+  transition: color var(--duration-hover) ease;
+}
+
+.site-nav a:hover { color: var(--color-ink); }
+
+.site-nav a[aria-current="page"] { color: var(--color-ink); font-weight: 500; }
+
+/* ---------- Typography ---------- */
+
+h1, h2 { font-family: var(--font-display); font-weight: 400; }
+
+.display {
+  font-size: var(--text-display);
+  font-weight: 300;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.page-title {
+  font-size: var(--text-heading);
+  font-weight: 300;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+}
+
+h2 {
+  font-size: var(--text-heading-sm);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.kicker {
+  font-family: var(--font-body);
+  font-size: var(--text-kicker);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-gray);
+  margin-bottom: var(--space-3);
+}
+
+.lede {
+  font-family: var(--font-display);
+  font-size: var(--text-subheading);
+  line-height: 1.3;
+}
+
+p + p { margin-top: var(--space-4); }
+
+.muted { color: var(--color-gray); }
+
+main p a, main li a, main h3 a {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--color-gray);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color var(--duration-hover) ease;
+}
+
+main p a:hover, main li a:hover, main h3 a:hover { text-decoration-color: var(--color-ink); }
+
+main h3 a { font-weight: 400; }
+
+/* ---------- Sections ---------- */
+
+.section { padding-top: var(--space-24); padding-bottom: var(--space-24); }
+
+.section + .section, .divided { border-top: 1px solid var(--color-mist); }
+
+.section-head { margin-bottom: var(--space-12); }
+
+.prose { max-width: 720px; }
+.prose h2 { margin-bottom: var(--space-4); }
+
+/* ---------- Hero (telemetry layout, D-015) ---------- */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(100svh - 65px);
+  padding-top: var(--space-16);
+  padding-bottom: var(--space-6);
+}
+
+.hero h1 { margin-bottom: var(--space-8); }
+
+.hero .lede { margin-bottom: var(--space-6); }
+
+.hero-copy { max-width: 620px; }
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+  margin-top: var(--space-8);
+}
+
+[data-parallax] {
+  transition: transform 0.45s var(--ease-glide);
+  will-change: transform;
+}
+
+.telemetry {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-4);
+  margin-top: var(--space-16);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-mist);
+}
+
+.telemetry .kicker { margin-bottom: 0; }
+
+.telemetry-local { display: flex; flex-direction: column; gap: var(--space-2); }
+
+.ist-note { text-transform: none; letter-spacing: 0.02em; opacity: 0.7; }
+
+.telemetry .clock { color: var(--color-ink); }
+
+/* Page-header variant for inner pages */
+.page-head { padding-top: var(--space-24); padding-bottom: var(--space-24); }
+.page-head .page-title { margin-bottom: var(--space-6); }
+.page-head .prose p:first-of-type { margin-top: 0; }
+
+/* ---------- Sky zones — white type over the aurora (D-021) ---------- */
+
+.sky, .sky h1, .sky h2 { color: var(--color-paper); }
+
+.sky .kicker { color: var(--color-mist); }
+
+.sky .lede a, .sky p a {
+  color: var(--color-paper);
+  text-decoration-color: rgba(255, 255, 255, 0.4);
+}
+
+.sky .lede a:hover, .sky p a:hover { text-decoration-color: var(--color-paper); }
+
+.sky .btn {
+  color: var(--color-paper);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.sky .btn:hover { background: transparent; border-color: var(--color-paper); }
+
+.sky .telemetry { border-top-color: rgba(255, 255, 255, 0.3); }
+
+.sky .telemetry .clock { color: var(--color-paper); }
+
+/* ---------- Reveal motion (D-010) ---------- */
+
+.reveal { animation: fade-up var(--duration-reveal) var(--ease-glide) both; }
+
+[data-reveal] {
+  opacity: 0;
+  /* Perspective settle (D-020): fade-up with a 3deg rotateX that lands flat */
+  transform: perspective(1200px) rotateX(3deg) translateY(20px);
+  transform-origin: 50% 100%;
+  transition: opacity var(--duration-reveal) var(--ease-glide),
+              transform var(--duration-reveal) var(--ease-glide);
+}
+
+[data-reveal].in { opacity: 1; transform: none; }
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { animation: none; }
+  [data-reveal] { opacity: 1; transform: none; transition: none; }
+  * { transition-duration: 0.01ms !important; }
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  font-weight: 400;
+  color: var(--color-ink);
+  background: transparent;
+  border: 1px solid var(--color-ink);
+  border-radius: var(--radius-pill);
+  padding: 12px 28px;
+  text-decoration: none;
+  transition: background var(--duration-hover) ease, color var(--duration-hover) ease;
+}
+
+.btn:hover { background: var(--color-ink); color: var(--color-paper); }
+
+/* ---------- Definition rows (Work: What I build) ---------- */
+
+.def-rows { border-top: 1px solid var(--color-mist); }
+
+.def-row {
+  display: grid;
+  grid-template-columns: minmax(200px, 300px) minmax(0, 1fr);
+  gap: var(--space-8);
+  padding: var(--space-8) 0;
+  border-bottom: 1px solid var(--color-mist);
+}
+
+.def-row h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-subheading);
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.def-row p { color: var(--color-gray); margin: 0; }
+
+/* ---------- Big link rows (Home: onward links) ---------- */
+
+.link-rows { border-top: 1px solid var(--color-mist); }
+
+.link-row {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  gap: var(--space-6);
+  align-items: baseline;
+  padding: var(--space-8) 0;
+  border-bottom: 1px solid var(--color-mist);
+  text-decoration: none;
+  color: var(--color-ink);
+}
+
+.link-row .idx {
+  font-size: var(--text-kicker);
+  letter-spacing: 0.14em;
+  color: var(--color-gray);
+}
+
+.link-row .title {
+  font-family: var(--font-display);
+  font-size: var(--text-heading-sm);
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.link-row .arrow {
+  font-family: var(--font-body);
+  font-size: var(--text-subheading);
+  color: var(--color-gray);
+  transition: transform 0.3s var(--ease-glide), color var(--duration-hover) ease;
+}
+
+.link-row .note {
+  grid-column: 2;
+  color: var(--color-gray);
+  font-size: var(--text-body-sm);
+}
+
+.link-row:hover .arrow { transform: translateX(8px); color: var(--color-ink); }
+
+/* ---------- Tag pills ---------- */
+
+.tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-6); }
+
+.tag {
+  font-size: var(--text-caption);
+  color: var(--color-gray);
+  border: 1px solid var(--color-mist);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  transition: border-color var(--duration-hover) ease;
+}
+
+.tag:hover { border-color: var(--color-gray); }
+
+/* ---------- Specimen grid (Beyond Work) ---------- */
+
+.specimen-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--color-mist);
+  border-left: 1px solid var(--color-mist);
+}
+
+.specimen {
+  border-right: 1px solid var(--color-mist);
+  border-bottom: 1px solid var(--color-mist);
+  padding: var(--space-12) var(--space-8);
+}
+
+.specimen h2 { margin-bottom: var(--space-4); }
+
+.specimen p { color: var(--color-gray); }
+
+/* ---------- Directory rows (Contact) ---------- */
+
+.dir-rows { border-top: 1px solid var(--color-mist); }
+
+.dir-row {
+  display: grid;
+  grid-template-columns: minmax(140px, 240px) minmax(0, 1fr);
+  gap: var(--space-2) var(--space-8);
+  padding: var(--space-8) 0;
+  border-bottom: 1px solid var(--color-mist);
+}
+
+.dir-row .channel {
+  font-family: var(--font-display);
+  font-size: var(--text-subheading);
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.dir-row .dir-link {
+  font-size: var(--text-body);
+}
+
+.dir-row p { color: var(--color-gray); margin: 0; font-size: var(--text-body-sm); }
+
+/* ---------- Inverse band (D-001, D-014: max one per page) ---------- */
+
+/* Band = a window back to the sky (aurora media behind text, D-021) */
+.band {
+  position: relative;
+  background: var(--color-ink) url('/assets/aurora-burst.jpg') center / cover no-repeat;
+  color: var(--color-paper);
+}
+
+.band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.band .container { position: relative; }
+
+.band .kicker { color: var(--color-gray); }
+
+.band .container { padding-top: var(--space-24); padding-bottom: var(--space-24); }
+
+.band h2 { margin-bottom: var(--space-4); }
+
+.band p { color: var(--color-paper); max-width: 620px; }
+
+.band p a {
+  color: var(--color-paper);
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 255, 255, 0.4);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color var(--duration-hover) ease;
+}
+
+.band p a:hover { text-decoration-color: var(--color-paper); }
+
+.band .btn { color: var(--color-paper); border-color: rgba(255, 255, 255, 0.3); }
+
+.band .btn:hover { background: transparent; border-color: var(--color-paper); }
+
+.band .hero-actions { margin-top: var(--space-8); }
+
+/* ---------- Footer ---------- */
+
+.site-footer {
+  border-top: 1px solid var(--color-mist);
+  background: var(--color-paper);
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-12);
+}
+
+.site-footer .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-8);
+}
+
+.site-footer .kicker { margin-bottom: 0; }
+
+.footer-links { display: flex; flex-wrap: wrap; gap: var(--space-4) var(--space-6); }
+
+.footer-links a {
+  font-size: var(--text-caption);
+  color: var(--color-gray);
+  text-decoration: none;
+  transition: color var(--duration-hover) ease;
+}
+
+.footer-links a:hover { color: var(--color-ink); }
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 720px) {
+  .site-nav { gap: var(--space-4); flex-wrap: wrap; }
+  .site-nav a { font-size: 13px; }
+  .section, .page-head { padding-top: var(--space-16); padding-bottom: var(--space-16); }
+  .hero { min-height: 0; padding-top: var(--space-12); }
+  .telemetry { flex-direction: column; align-items: flex-start; gap: var(--space-2); margin-top: var(--space-12); }
+  .band .container { padding-top: var(--space-16); padding-bottom: var(--space-16); }
+  .def-row, .dir-row { grid-template-columns: 1fr; gap: var(--space-2); }
+  .specimen-grid { grid-template-columns: 1fr; }
+  .specimen { padding: var(--space-8) var(--space-6); }
+  .link-row { grid-template-columns: 40px minmax(0, 1fr) auto; }
+}

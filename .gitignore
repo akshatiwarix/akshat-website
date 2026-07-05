@@ -1,0 +1,15 @@
+# OS
+.DS_Store
+
+# Editor / tooling
+.claude/
+.gstack/
+
+# Internal working docs — not for the public site
+CLAUDE.md
+COPY.md
+DESIGN.md
+CONTEXT.md
+
+# Vercel
+.vercel/
