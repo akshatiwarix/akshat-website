@@ -1,4 +1,4 @@
-// Live local clock (D-015) — content, not animation: updates twice a minute.
+// Live local clock (D-015) — content, not animation: ticks every second.
 // Shows the visitor's own time + place; the note reflects Akshat's IST time.
 (function () {
   var el = document.querySelector('[data-clock]');
@@ -8,7 +8,7 @@
   var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   var localFmt = new Intl.DateTimeFormat('en-GB', {
-    hour: '2-digit', minute: '2-digit', hour12: false, timeZone: tz
+    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: tz
   });
   var istFmt = new Intl.DateTimeFormat('en-GB', {
     hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Kolkata'
@@ -48,7 +48,7 @@
     if (istEl) istEl.textContent = istFmt.format(now);
   }
   tick();
-  setInterval(tick, 30000);
+  setInterval(tick, 1000);
 })();
 
 // Cursor-response hero (D-019) — skeleton from a donor parallax component,
