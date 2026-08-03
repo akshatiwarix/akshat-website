@@ -205,7 +205,7 @@ main h3 a { font-weight: 400; }
   flex-direction: column;
   justify-content: space-between;
   min-height: calc(100svh - 65px);
-  padding-top: var(--space-16);
+  padding-top: var(--space-12);
   padding-bottom: var(--space-6);
 }
 
@@ -233,18 +233,65 @@ main h3 a { font-weight: 400; }
   justify-content: space-between;
   align-items: flex-end;
   gap: var(--space-4);
-  margin-top: var(--space-16);
+  margin-top: var(--space-8);
   padding-top: var(--space-4);
   border-top: 1px solid var(--color-mist);
 }
 
 .telemetry .kicker { margin-bottom: 0; }
 
-.telemetry-local { display: flex; flex-direction: column; gap: var(--space-2); }
+/* Three zones side by side (D-015): the US clocks are the pitch, IST is context. */
+.clocks { display: flex; gap: var(--space-12); }
 
-.ist-note { text-transform: none; letter-spacing: 0.02em; opacity: 0.7; }
+.clock-cell { display: flex; flex-direction: column; gap: var(--space-1); }
 
-.telemetry .clock { color: var(--color-ink); }
+.clock {
+  font-family: var(--font-body);
+  font-size: var(--text-subheading);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
+  color: var(--color-ink);
+  margin: 0;
+}
+
+.hours-note {
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: var(--text-caption);
+  max-width: 340px;
+  text-align: right;
+}
+
+/* ---------- Availability line (hiring signal) ---------- */
+
+.availability {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-mist);
+  max-width: 560px;
+}
+
+.availability a, .availability span {
+  font-family: var(--font-body);
+  font-size: var(--text-kicker);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.7;
+}
+
+.availability a { text-decoration: none; }
+
+.availability-arrow {
+  display: inline-block;
+  margin-left: var(--space-2);
+  transition: transform 0.3s var(--ease-glide);
+}
+
+.availability a:hover .availability-arrow { transform: translateX(6px); }
+
+.sky .availability { border-top-color: rgba(255, 255, 255, 0.3); }
+
+.sky .availability a { color: var(--color-paper); }
 
 /* Page-header variant for inner pages */
 .page-head { padding-top: var(--space-24); padding-bottom: var(--space-24); }
@@ -279,7 +326,10 @@ main h3 a { font-weight: 400; }
 
 .reveal { animation: fade-up var(--duration-reveal) var(--ease-glide) both; }
 
-[data-reveal] {
+/* Default state is VISIBLE; the animation enhances from there. The hidden start
+   state is gated on .js (set by an inline head script) so no-JS, a failed
+   script, or a headless capture never leaves the page blank. */
+.js [data-reveal] {
   opacity: 0;
   /* Perspective settle (D-020): fade-up with a 3deg rotateX that lands flat */
   transform: perspective(1200px) rotateX(3deg) translateY(20px);
@@ -288,7 +338,7 @@ main h3 a { font-weight: 400; }
               transform var(--duration-reveal) var(--ease-glide);
 }
 
-[data-reveal].in { opacity: 1; transform: none; }
+.js [data-reveal].in { opacity: 1; transform: none; }
 
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(16px); }
@@ -297,7 +347,7 @@ main h3 a { font-weight: 400; }
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { animation: none; }
-  [data-reveal] { opacity: 1; transform: none; transition: none; }
+  .js [data-reveal], [data-reveal] { opacity: 1; transform: none; transition: none; }
   * { transition-duration: 0.01ms !important; }
 }
 
@@ -339,6 +389,26 @@ main h3 a { font-weight: 400; }
 }
 
 .def-row p { color: var(--color-gray); margin: 0; }
+
+.def-dates {
+  display: block;
+  font-family: var(--font-body);
+  font-size: var(--text-kicker);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-gray);
+  margin-top: var(--space-2);
+}
+
+/* ---------- Tool stack (keyword bait, kept deliberately quiet) ---------- */
+
+.stack-note { padding-top: var(--space-16); padding-bottom: var(--space-16); }
+
+.tool-line {
+  font-size: var(--text-body-sm);
+  color: var(--color-gray);
+  max-width: 720px;
+}
 
 /* ---------- Big link rows (Home: onward links) ---------- */
 
@@ -523,7 +593,10 @@ main h3 a { font-weight: 400; }
   .site-nav a { font-size: 13px; }
   .section, .page-head { padding-top: var(--space-16); padding-bottom: var(--space-16); }
   .hero { min-height: 0; padding-top: var(--space-12); }
-  .telemetry { flex-direction: column; align-items: flex-start; gap: var(--space-2); margin-top: var(--space-12); }
+  .telemetry { flex-direction: column; align-items: flex-start; gap: var(--space-4); margin-top: var(--space-12); }
+  .clocks { gap: var(--space-8); }
+  .clock { font-size: var(--text-body); }
+  .hours-note { text-align: left; max-width: none; }
   .band .container { padding-top: var(--space-16); padding-bottom: var(--space-16); }
   .def-row, .dir-row { grid-template-columns: 1fr; gap: var(--space-2); }
   .specimen-grid { grid-template-columns: 1fr; }

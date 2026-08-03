@@ -1,51 +1,31 @@
-// Live local clock (D-015) — content, not animation: ticks every second.
-// Shows the visitor's own time + place; the note reflects Akshat's IST time.
+// Live clocks (D-015) — content, not animation: tick every second.
+// Three zones side by side. PT and ET are the working hours; IST is where he sleeps.
 (function () {
-  var el = document.querySelector('[data-clock]');
-  if (!el) return;
+  var zones = [
+    { key: 'pt', tz: 'America/Los_Angeles' },
+    { key: 'et', tz: 'America/New_York' },
+    { key: 'ist', tz: 'Asia/Kolkata' }
+  ];
 
-  // The visitor's own timezone, e.g. "Europe/Amsterdam".
-  var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-
-  var localFmt = new Intl.DateTimeFormat('en-GB', {
-    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false, timeZone: tz
+  var clocks = [];
+  zones.forEach(function (zone) {
+    var el = document.querySelector('[data-clock="' + zone.key + '"]');
+    if (!el) return;
+    clocks.push({
+      el: el,
+      fmt: new Intl.DateTimeFormat('en-GB', {
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: false, timeZone: zone.tz
+      })
+    });
   });
-  var istFmt = new Intl.DateTimeFormat('en-GB', {
-    hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Kolkata'
-  });
-
-  var abbrEl = document.querySelector('[data-tz-abbr]');
-  var placeEl = document.querySelector('[data-place]');
-  var utcEl = document.querySelector('[data-utc]');
-  var istEl = document.querySelector('[data-ist-clock]');
-
-  // City from the timezone id: "Europe/Amsterdam" -> "Amsterdam".
-  if (placeEl) placeEl.textContent = tz.split('/').pop().replace(/_/g, ' ');
-
-  function tzAbbr(d) {
-    var parts = new Intl.DateTimeFormat('en-US', {
-      timeZone: tz, timeZoneName: 'short'
-    }).formatToParts(d);
-    for (var i = 0; i < parts.length; i++) {
-      if (parts[i].type === 'timeZoneName') return parts[i].value;
-    }
-    return '';
-  }
-
-  function utcOffset(d) {
-    var mins = -d.getTimezoneOffset(); // minutes east of UTC
-    var sign = mins >= 0 ? '+' : '-';
-    var abs = Math.abs(mins);
-    var m = abs % 60;
-    return 'UTC ' + sign + Math.floor(abs / 60) + ':' + (m < 10 ? '0' + m : m);
-  }
+  if (!clocks.length) return;
 
   function tick() {
     var now = new Date();
-    el.textContent = localFmt.format(now);
-    if (abbrEl) abbrEl.textContent = tzAbbr(now);
-    if (utcEl) utcEl.textContent = utcOffset(now);
-    if (istEl) istEl.textContent = istFmt.format(now);
+    clocks.forEach(function (clock) {
+      clock.el.textContent = clock.fmt.format(now);
+    });
   }
   tick();
   setInterval(tick, 1000);
