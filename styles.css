@@ -56,6 +56,10 @@
 
   --font-display: 'Raleway', ui-sans-serif, system-ui, sans-serif;
   --font-body: 'Roboto', ui-sans-serif, system-ui, sans-serif;
+  /* Deliberate exception to the two-font rule, scoped to the machine view: that
+     readout is instrumentation, not design, and it should read as a payload.
+     System stack, so it costs no extra request. */
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
 
   /* Type scale in rem, not px: a larger browser text size scales the layout
      with the text instead of breaking it. */
@@ -302,6 +306,11 @@ a, button, .btn, .link-row, .tag {
 .site-header.is-floating .site-nav a:hover,
 .site-header.is-floating .site-nav a[aria-current="page"] { color: var(--color-ink); }
 
+/* Both toggles are JS-only. Without it they'd render as controls that do
+   nothing, so they don't render at all. */
+html:not(.js) .theme-toggle,
+html:not(.js) .mv-switch { display: none; }
+
 /* ---------- Theme toggle ---------- */
 
 /* Same hairline-and-pill vocabulary as .btn, sized down to a 2rem target and
@@ -367,6 +376,84 @@ a, button, .btn, .link-row, .tag {
   :root:not([data-theme]) .theme-icon-moon { opacity: 0; transform: rotate(90deg) scale(0.6); }
   :root:not([data-theme]) .theme-icon-sun { opacity: 1; transform: none; }
 }
+
+/* ---------- Machine view switch (floating chrome) ---------- */
+
+/* The one control that survives into the machine view, so it floats on its own
+   layer rather than living in the header. Same material vocabulary as the
+   header bar: hairline pill, blurred surface, grayscale not vibrancy.
+   Centred by auto margins, not left:50% — a fixed box offset from the left edge
+   only gets the remaining half of the viewport to size itself in. */
+.mv-switch {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: var(--space-6);
+  z-index: 30;
+  margin: 0 auto;
+  width: -moz-fit-content;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+  background: var(--color-chrome);
+  border: 1px solid var(--color-mist);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  /* The knob is dragged horizontally, so the browser must not claim the gesture
+     for scrolling first. */
+  touch-action: none;
+  backdrop-filter: blur(24px) grayscale(1) brightness(var(--chrome-brightness));
+  -webkit-backdrop-filter: blur(24px) grayscale(1) brightness(var(--chrome-brightness));
+  transition: border-color var(--duration-hover) ease;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .mv-switch { background: var(--color-chrome-solid); }
+}
+
+.mv-switch:hover { border-color: var(--color-gray); }
+
+/* The track is sized by the knob plus one knob-width of travel. */
+.mv-track {
+  position: relative;
+  display: block;
+  width: 3.25rem;
+  height: 1.625rem;
+}
+
+.mv-knob {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1.625rem;
+  height: 1.625rem;
+  display: grid;
+  place-items: center;
+  border-radius: var(--radius-pill);
+  color: var(--color-gray);
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--color-mist);
+  transition: transform var(--duration-material) var(--ease-out),
+              background var(--duration-hover) ease,
+              color var(--duration-hover) ease,
+              box-shadow var(--duration-hover) ease;
+}
+
+/* On: the knob has travelled the width of the track and inverted, so the state
+   is legible from the position and the fill at once. */
+:root[data-view="machine"] .mv-knob {
+  transform: translateX(1.625rem);
+  color: var(--color-paper);
+  background: var(--color-ink);
+  box-shadow: inset 0 0 0 1px var(--color-ink);
+}
+
+/* While a finger is on it the knob is positioned frame by frame, so a
+   transition would fight the gesture. */
+.mv-switch.is-dragging .mv-knob { transition: background var(--duration-hover) ease; }
+
+.mv-knob svg { display: block; width: 0.875rem; height: 0.875rem; }
 
 /* Feedback on pointer-down, never only on release */
 .site-nav a:active, .wordmark:active, .footer-links a:active { transform: scale(0.96); }
@@ -939,6 +1026,41 @@ main h3 a { font-weight: 400; }
 
 .footer-links a:hover { color: var(--color-ink); }
 
+/* ---------- Machine view (the readout) ---------- */
+
+/* Everything the design contributes goes away: the aurora, the chrome, the
+   reveals. What is left is flat paper and the words, which is all a machine
+   ever had. */
+:root[data-view="machine"] .site-header,
+:root[data-view="machine"] main,
+:root[data-view="machine"] .site-footer { display: none; }
+
+:root[data-view="machine"] body { background: var(--color-paper); }
+
+:root[data-view="machine"] body::before,
+:root[data-view="machine"] body::after { display: none; }
+
+/* Monospace is a deliberate exception to the two-font rule, scoped to here: the
+   readout is instrumentation, not design, and should read as output. */
+.mv-doc {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: var(--text-body-sm);
+  line-height: 1.7;
+  max-width: 48rem;
+  margin: 0 auto;
+  /* Bottom padding clears the floating switch at the end of a long readout. */
+  padding: var(--space-16) var(--space-6) var(--space-32);
+  animation: fade-in var(--duration-material) var(--ease-out) both;
+}
+
+/* Every line is the same size and weight on purpose. Hierarchy is design; a
+   machine reads a flat sequence of strings. */
+.mv-line { overflow-wrap: anywhere; }
+
+.mv-line + .mv-line { margin-top: var(--space-4); }
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 45rem) {
@@ -958,6 +1080,7 @@ main h3 a { font-weight: 400; }
   .specimen-grid { grid-template-columns: 1fr; }
   .specimen { padding: var(--space-8) var(--space-6); }
   .link-row { grid-template-columns: 2.5rem minmax(0, 1fr) auto; }
+  .mv-doc { padding-top: var(--space-12); }
 }
 
 /* ---------- Accessibility preferences ---------- */
