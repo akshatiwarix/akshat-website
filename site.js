@@ -247,7 +247,13 @@
   // changes character between a laptop and a wide display. The pitch and dot
   // ratios are the reference's own, measured off its cap height.
   var PITCH_RATIO = 0.036;   // lattice pitch ÷ font size — ~2 dots across a stroke
-  var DOT_RATIO = 0.45;      // resting dot edge ÷ pitch
+  // 0.45 is the reference's ratio, but the reference sat on near-black. Ink
+  // coverage is (dot ÷ pitch)², so 0.45 puts only 20% of the glyph's area in
+  // ink — a fifth of what solid type emitted — and over a mid-tone painting the
+  // name read as barely there. 0.65 doubles the ink to 42% and still leaves a
+  // clear gap between dots; past ~0.75 they merge and it stops reading as a
+  // lattice at all.
+  var DOT_RATIO = 0.65;      // resting dot edge ÷ pitch
   var RADIUS_RATIO = 0.26;   // repulsion radius ÷ font size (~0.35 of cap height)
   var PUSH_RATIO = 0.55;     // furthest a dot is driven, ÷ radius
   var RESPONSE = 0.20;       // seconds for a released dot to retake its cell
@@ -259,11 +265,11 @@
   // loads, purely to thicken coverage; the <h1> itself stays at 300 per D-009.
   var STENCIL_WEIGHT = 400;
 
-  // The reference sat on near-black. The aurora behind this hero is neither dark
-  // nor quiet, so the resting dot is the bright on-media token rather than the
-  // reference's mid grey — at #808080 the name vanished into the painting.
-  var REST_GREY = 230;       // --color-on-media-dim (#e6e6e6), peaking to #ffffff
-  var REST_ALPHA = 0.85;
+  // The reference sat on near-black with tinted dots. Over the aurora the resting
+  // dot needs the full on-media token — at #808080 the name vanished into the
+  // painting, and at #e6e6e6 it was still losing to the brightest patches.
+  var REST_GREY = 255;       // --color-on-media (#ffffff)
+  var REST_ALPHA = 0.95;
   // Resting size and brightness both vary per dot, as they do in the reference.
   var VARIANCE = [
     { alpha: 0.74, scale: 0.82 },

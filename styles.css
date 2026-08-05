@@ -22,7 +22,10 @@
   --light-chrome-brightness: 1.04;
   --light-tint-hover: rgba(0, 0, 0, 0.025);
   --light-tint-press: rgba(0, 0, 0, 0.05);
-  --light-scrim: rgba(0, 0, 0, 0.35);
+  /* Lifted from 0.35 for D-024: the dot lattice puts ~42% of the hero name's
+     area in ink where solid type put 100%, so the sky it sits on has to give
+     back some of the contrast the gaps cost. Dark mode already ran 0.5. */
+  --light-scrim: rgba(0, 0, 0, 0.42);
 
   --dark-ink: #ffffff;
   /* Lifted off #808080: mid-grey clears 4.5:1 on white but not on black. */
