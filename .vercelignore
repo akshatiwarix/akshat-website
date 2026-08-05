@@ -1,2 +1,6 @@
 # Internal working docs live in git but never reach the deployed site.
 PROOF-OF-WORK.md
+
+# Agent skills are tooling for building the site, not part of it.
+.agents/
+skills-lock.json
