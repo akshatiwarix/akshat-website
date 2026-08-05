@@ -3,7 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script>document.documentElement.className += ' js';</script>
+  <!-- Theme is resolved in the same blocking script that sets .js, before first
+       paint, so a dark-mode reader never sees a frame of white. -->
+  <script>
+  (function () {
+    var root = document.documentElement;
+    root.className += ' js';
+    var stored = null;
+    try { stored = localStorage.getItem('theme'); } catch (e) {}
+    root.setAttribute('data-theme', stored === 'dark' || stored === 'light' ? stored :
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+  })();
+  </script>
   <title>Work — Akshat Tiwari, GTM Engineer</title>
   <meta name="description" content="The GTM systems Akshat Tiwari builds: outbound research, enrichment, ICP scoring, LLM evaluation loops, and agentic workflows. Plus career history and resume.">
   <link rel="canonical" href="https://www.akshatiwari.com/work/">
@@ -30,12 +41,23 @@
 <header class="site-header">
   <div class="container">
     <a class="wordmark" href="/">Akshat Tiwari</a>
-    <nav class="site-nav" aria-label="Site">
-      <a href="/">Home</a>
-      <a href="/work/" aria-current="page">Work</a>
-      <a href="/beyond-work/">Beyond Work</a>
-      <a href="/contact/">Contact</a>
-    </nav>
+    <div class="header-right">
+      <nav class="site-nav" aria-label="Site">
+        <a href="/">Home</a>
+        <a href="/work/" aria-current="page">Work</a>
+        <a href="/beyond-work/">Beyond Work</a>
+        <a href="/contact/">Contact</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle
+              aria-pressed="false" aria-label="Switch to dark mode" title="Switch to dark mode">
+        <span class="theme-icon theme-icon-moon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.2 14.6A8.6 8.6 0 0 1 9.4 3.8 8.6 8.6 0 1 0 20.2 14.6Z"/></svg>
+        </span>
+        <span class="theme-icon theme-icon-sun" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.4"/><path d="M12 2.4v2.1M12 19.5v2.1M2.4 12h2.1M19.5 12h2.1M5.2 5.2l1.5 1.5M17.3 17.3l1.5 1.5M18.8 5.2l-1.5 1.5M6.7 17.3l-1.5 1.5"/></svg>
+        </span>
+      </button>
+    </div>
   </div>
 </header>
 

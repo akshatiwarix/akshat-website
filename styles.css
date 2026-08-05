@@ -10,10 +10,49 @@
    "nothing bouncy" and Apple's damping 1.0 default agree. */
 
 :root {
-  --color-ink: #000000;
-  --color-gray: #808080;
-  --color-mist: #e6e6e6;
-  --color-paper: #ffffff;
+  /* Both palettes live here; the semantic tokens below choose one. Dark is the
+     same monochrome system read from the other end — ink and paper trade places,
+     and the two in-between values invert in lightness rather than in hue. */
+  --light-ink: #000000;
+  --light-gray: #808080;
+  --light-mist: #e6e6e6;
+  --light-paper: #ffffff;
+  --light-chrome: rgba(255, 255, 255, 0.76);
+  --light-chrome-solid: rgba(255, 255, 255, 0.94);
+  --light-chrome-brightness: 1.04;
+  --light-tint-hover: rgba(0, 0, 0, 0.025);
+  --light-tint-press: rgba(0, 0, 0, 0.05);
+  --light-scrim: rgba(0, 0, 0, 0.35);
+
+  --dark-ink: #ffffff;
+  /* Lifted off #808080: mid-grey clears 4.5:1 on white but not on black. */
+  --dark-gray: #999999;
+  --dark-mist: #262626;
+  --dark-paper: #000000;
+  --dark-chrome: rgba(0, 0, 0, 0.72);
+  --dark-chrome-solid: rgba(0, 0, 0, 0.94);
+  --dark-chrome-brightness: 0.9;
+  --dark-tint-hover: rgba(255, 255, 255, 0.05);
+  --dark-tint-press: rgba(255, 255, 255, 0.09);
+  --dark-scrim: rgba(0, 0, 0, 0.5);
+
+  --color-ink: var(--light-ink);
+  --color-gray: var(--light-gray);
+  --color-mist: var(--light-mist);
+  --color-paper: var(--light-paper);
+  --color-chrome: var(--light-chrome);
+  --color-chrome-solid: var(--light-chrome-solid);
+  --chrome-brightness: var(--light-chrome-brightness);
+  --color-tint-hover: var(--light-tint-hover);
+  --color-tint-press: var(--light-tint-press);
+  --color-scrim: var(--light-scrim);
+
+  /* Type that sits on the aurora (.sky, .band) — always light, in both themes.
+     The photograph doesn't have a light mode, so these must not follow the
+     ink/paper swap or the hero goes black-on-blue. */
+  --color-on-media: #ffffff;
+  --color-on-media-dim: #e6e6e6;
+  --color-on-media-quiet: #808080;
 
   --font-display: 'Raleway', ui-sans-serif, system-ui, sans-serif;
   --font-body: 'Roboto', ui-sans-serif, system-ui, sans-serif;
@@ -58,6 +97,38 @@
   --duration-reveal: 0.8s;
 }
 
+/* An explicit choice, stamped on <html> by the inline head script before paint
+   so a dark-mode reader never eats a white flash. */
+:root[data-theme="dark"] {
+  --color-ink: var(--dark-ink);
+  --color-gray: var(--dark-gray);
+  --color-mist: var(--dark-mist);
+  --color-paper: var(--dark-paper);
+  --color-chrome: var(--dark-chrome);
+  --color-chrome-solid: var(--dark-chrome-solid);
+  --chrome-brightness: var(--dark-chrome-brightness);
+  --color-tint-hover: var(--dark-tint-hover);
+  --color-tint-press: var(--dark-tint-press);
+  --color-scrim: var(--dark-scrim);
+}
+
+/* No-JS fallback: the attribute is never stamped, so honour the OS directly.
+   The mapping is repeated because CSS has no way to alias a whole block. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --color-ink: var(--dark-ink);
+    --color-gray: var(--dark-gray);
+    --color-mist: var(--dark-mist);
+    --color-paper: var(--dark-paper);
+    --color-chrome: var(--dark-chrome);
+    --color-chrome-solid: var(--dark-chrome-solid);
+    --chrome-brightness: var(--dark-chrome-brightness);
+    --color-tint-hover: var(--dark-tint-hover);
+    --color-tint-press: var(--dark-tint-press);
+    --color-scrim: var(--dark-scrim);
+  }
+}
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html { -webkit-text-size-adjust: 100%; }
@@ -70,6 +141,8 @@ body {
   letter-spacing: var(--track-body);
   color: var(--color-ink);
   font-optical-sizing: auto;
+  /* Theme flips read as one surface changing state, not as a hard cut. */
+  transition: color var(--duration-material) var(--ease-out);
 }
 
 /* Aurora atmosphere (D-021) — media layer only, never UI fill.
@@ -88,12 +161,18 @@ body::after {
   position: fixed;
   inset: 0;
   z-index: -1;
-  background: rgba(0, 0, 0, 0.35);
+  background: var(--color-scrim);
+  transition: background-color var(--duration-material) var(--ease-out);
 }
 
 /* Solid paper surfaces floating over the sky. Opaque on purpose: a light
    translucent surface must never stack on another light translucent one. */
-.sheet { background: var(--color-paper); position: relative; z-index: 1; }
+.sheet {
+  background: var(--color-paper);
+  position: relative;
+  z-index: 1;
+  transition: background-color var(--duration-material) var(--ease-out);
+}
 
 .container {
   max-width: var(--page-max-width);
@@ -109,8 +188,9 @@ a:focus-visible, button:focus-visible {
   outline-offset: 3px;
 }
 
-.sky a:focus-visible, .site-header:not(.is-floating) a:focus-visible {
-  outline-color: var(--color-paper);
+.sky a:focus-visible, .site-header:not(.is-floating) a:focus-visible,
+.site-header:not(.is-floating) button:focus-visible {
+  outline-color: var(--color-on-media);
 }
 
 /* Kill the latency the browser adds on its own: no 300ms tap delay, no lagging
@@ -137,11 +217,11 @@ a, button, .btn, .link-row, .tag {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: rgba(255, 255, 255, 0);
+  background: transparent;
   /* Grayscale, not Apple's saturate(180%): vibrancy would pull the aurora's
      greens straight into the chrome, and the palette is monochrome. */
-  backdrop-filter: blur(0px) grayscale(1) brightness(1.04);
-  -webkit-backdrop-filter: blur(0px) grayscale(1) brightness(1.04);
+  backdrop-filter: blur(0px) grayscale(1) brightness(var(--chrome-brightness));
+  -webkit-backdrop-filter: blur(0px) grayscale(1) brightness(var(--chrome-brightness));
   opacity: 0;
   /* Blur radius and opacity animate together, so the surface reads as a
      material arriving rather than a plain fade. */
@@ -155,13 +235,13 @@ a, button, .btn, .link-row, .tag {
 
 .site-header.is-floating::after {
   opacity: 1;
-  background: rgba(255, 255, 255, 0.76);
-  backdrop-filter: blur(24px) grayscale(1) brightness(1.04);
-  -webkit-backdrop-filter: blur(24px) grayscale(1) brightness(1.04);
+  background: var(--color-chrome);
+  backdrop-filter: blur(24px) grayscale(1) brightness(var(--chrome-brightness));
+  -webkit-backdrop-filter: blur(24px) grayscale(1) brightness(var(--chrome-brightness));
 }
 
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .site-header.is-floating::after { background: rgba(255, 255, 255, 0.94); }
+  .site-header.is-floating::after { background: var(--color-chrome-solid); }
 }
 
 .site-header .container {
@@ -179,7 +259,7 @@ a, button, .btn, .link-row, .tag {
   font-family: var(--font-display);
   font-size: 1.125rem;
   font-weight: 400;
-  color: var(--color-paper);
+  color: var(--color-on-media);
   text-decoration: none;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -187,20 +267,28 @@ a, button, .btn, .link-row, .tag {
               transform var(--duration-press) var(--ease-out);
 }
 
+/* Nav and theme control travel together on the right, so space-between still
+   has exactly two children to push apart. */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
 .site-nav { display: flex; gap: var(--space-6); }
 
 .site-nav a {
   font-size: 0.875rem;
   white-space: nowrap;
-  color: var(--color-mist);
+  color: var(--color-on-media-dim);
   text-decoration: none;
   transition: color var(--duration-hover) ease,
               transform var(--duration-press) var(--ease-out);
 }
 
-.site-nav a:hover { color: var(--color-paper); }
+.site-nav a:hover { color: var(--color-on-media); }
 
-.site-nav a[aria-current="page"] { color: var(--color-paper); font-weight: 500; }
+.site-nav a[aria-current="page"] { color: var(--color-on-media); font-weight: 500; }
 
 /* Once the bar becomes a light material, the type inverts. Vibrancy over
    translucency: a touch more contrast and tracking than flat grey. */
@@ -213,6 +301,72 @@ a, button, .btn, .link-row, .tag {
 
 .site-header.is-floating .site-nav a:hover,
 .site-header.is-floating .site-nav a[aria-current="page"] { color: var(--color-ink); }
+
+/* ---------- Theme toggle ---------- */
+
+/* Same hairline-and-pill vocabulary as .btn, sized down to a 2rem target and
+   riding the header's own light/dark inversion. */
+.theme-toggle {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-on-media);
+  cursor: pointer;
+  transition: background var(--duration-hover) ease,
+              border-color var(--duration-hover) ease,
+              color var(--duration-material) var(--ease-out),
+              transform var(--duration-press) var(--ease-out);
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--color-on-media);
+}
+
+.theme-toggle:active { transform: scale(0.92); }
+
+/* Once the bar is a light material the control inverts with the nav links. */
+.site-header.is-floating .theme-toggle {
+  color: var(--color-gray);
+  border-color: var(--color-mist);
+}
+
+.site-header.is-floating .theme-toggle:hover {
+  color: var(--color-ink);
+  border-color: var(--color-gray);
+  background: var(--color-tint-hover);
+}
+
+/* Both icons are stacked in one cell; only one is ever at full opacity. The
+   outgoing icon rotates out in the direction the incoming one rotates in, so
+   the swap reads as one object turning rather than two things blinking. */
+.theme-icon {
+  grid-area: 1 / 1;
+  display: block;
+  width: 0.9375rem;
+  height: 0.9375rem;
+  transition: opacity 0.22s var(--ease-out), transform 0.3s var(--ease-out);
+}
+
+.theme-icon svg { display: block; width: 100%; height: 100%; }
+
+.theme-icon-moon { opacity: 1; transform: none; }
+.theme-icon-sun { opacity: 0; transform: rotate(-90deg) scale(0.6); }
+
+:root[data-theme="dark"] .theme-icon-moon { opacity: 0; transform: rotate(90deg) scale(0.6); }
+:root[data-theme="dark"] .theme-icon-sun { opacity: 1; transform: none; }
+
+/* No-JS: the attribute never lands, so the icon follows the OS instead. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .theme-icon-moon { opacity: 0; transform: rotate(90deg) scale(0.6); }
+  :root:not([data-theme]) .theme-icon-sun { opacity: 1; transform: none; }
+}
 
 /* Feedback on pointer-down, never only on release */
 .site-nav a:active, .wordmark:active, .footer-links a:active { transform: scale(0.96); }
@@ -396,7 +550,7 @@ main h3 a { font-weight: 400; }
 
 .sky .availability { border-top-color: rgba(255, 255, 255, 0.3); }
 
-.sky .availability a { color: var(--color-paper); }
+.sky .availability a { color: var(--color-on-media); }
 
 /* Page-header variant for inner pages */
 .page-head { padding-top: var(--space-24); padding-bottom: var(--space-24); }
@@ -405,25 +559,25 @@ main h3 a { font-weight: 400; }
 
 /* ---------- Sky zones — white type over the aurora (D-021) ---------- */
 
-.sky, .sky h1, .sky h2 { color: var(--color-paper); }
+.sky, .sky h1, .sky h2 { color: var(--color-on-media); }
 
-.sky .kicker { color: var(--color-mist); }
+.sky .kicker { color: var(--color-on-media-dim); }
 
 .sky .lede a, .sky p a {
-  color: var(--color-paper);
+  color: var(--color-on-media);
   text-decoration-color: rgba(255, 255, 255, 0.4);
 }
 
-.sky .lede a:hover, .sky p a:hover { text-decoration-color: var(--color-paper); }
+.sky .lede a:hover, .sky p a:hover { text-decoration-color: var(--color-on-media); }
 
 .sky .btn {
-  color: var(--color-paper);
+  color: var(--color-on-media);
   border-color: rgba(255, 255, 255, 0.4);
 }
 
-.sky .btn:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--color-paper); }
+.sky .btn:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--color-on-media); }
 
-.sky .btn:active { background: rgba(255, 255, 255, 0.2); border-color: var(--color-paper); }
+.sky .btn:active { background: rgba(255, 255, 255, 0.2); border-color: var(--color-on-media); }
 
 /* The telemetry sits on busy sky, so it gets its own darker material: heavier
    material separates a structural region and keeps the numbers legible. */
@@ -437,7 +591,7 @@ main h3 a { font-weight: 400; }
   -webkit-backdrop-filter: blur(16px) grayscale(1);
 }
 
-.sky .telemetry .clock { color: var(--color-paper); }
+.sky .telemetry .clock { color: var(--color-on-media); }
 
 /* ---------- Reveal motion (D-010) ---------- */
 
@@ -613,7 +767,7 @@ main h3 a { font-weight: 400; }
 
 /* Hover hints in the direction of the click: the row leans toward where it's
    taking you, not just the arrow. */
-.link-row:hover { background: rgba(0, 0, 0, 0.025); }
+.link-row:hover { background: var(--color-tint-hover); }
 
 .link-row:hover .arrow {
   transform: translateX(0.5rem);
@@ -627,7 +781,7 @@ main h3 a { font-weight: 400; }
 }
 
 .link-row:active {
-  background: rgba(0, 0, 0, 0.05);
+  background: var(--color-tint-press);
   transform: scale(0.995);
 }
 
@@ -708,8 +862,8 @@ main h3 a { font-weight: 400; }
 /* Band = a window back to the sky (aurora media behind text, D-021) */
 .band {
   position: relative;
-  background: var(--color-ink) url('/assets/aurora-burst.jpg') center / cover no-repeat;
-  color: var(--color-paper);
+  background: #000000 url('/assets/aurora-burst.jpg') center / cover no-repeat;
+  color: var(--color-on-media);
 }
 
 .band::before {
@@ -721,16 +875,16 @@ main h3 a { font-weight: 400; }
 
 .band .container { position: relative; }
 
-.band .kicker { color: var(--color-gray); }
+.band .kicker { color: var(--color-on-media-quiet); }
 
 .band .container { padding-top: var(--space-24); padding-bottom: var(--space-24); }
 
 .band h2 { margin-bottom: var(--space-4); }
 
-.band p { color: var(--color-paper); max-width: 38.75rem; }
+.band p { color: var(--color-on-media); max-width: 38.75rem; }
 
 .band p a {
-  color: var(--color-paper);
+  color: var(--color-on-media);
   text-decoration: underline;
   text-decoration-color: rgba(255, 255, 255, 0.4);
   text-decoration-thickness: 1px;
@@ -738,13 +892,13 @@ main h3 a { font-weight: 400; }
   transition: text-decoration-color var(--duration-hover) ease;
 }
 
-.band p a:hover { text-decoration-color: var(--color-paper); }
+.band p a:hover { text-decoration-color: var(--color-on-media); }
 
-.band .btn { color: var(--color-paper); border-color: rgba(255, 255, 255, 0.3); }
+.band .btn { color: var(--color-on-media); border-color: rgba(255, 255, 255, 0.3); }
 
-.band .btn:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--color-paper); }
+.band .btn:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--color-on-media); }
 
-.band .btn:active { background: rgba(255, 255, 255, 0.2); border-color: var(--color-paper); }
+.band .btn:active { background: rgba(255, 255, 255, 0.2); border-color: var(--color-on-media); }
 
 .band .hero-actions { margin-top: var(--space-8); }
 
@@ -757,6 +911,8 @@ main h3 a { font-weight: 400; }
   padding-bottom: var(--space-12);
   position: relative;
   z-index: 1;
+  transition: background-color var(--duration-material) var(--ease-out),
+              border-color var(--duration-material) var(--ease-out);
 }
 
 .site-footer .container {
@@ -790,6 +946,7 @@ main h3 a { font-weight: 400; }
   :root { --track-display: -0.015em; --track-heading: -0.012em; }
   .site-nav { gap: var(--space-4); flex-wrap: wrap; }
   .site-nav a { font-size: 0.8125rem; }
+  .header-right { gap: var(--space-4); }
   .section, .page-head { padding-top: var(--space-16); padding-bottom: var(--space-16); }
   .hero { min-height: 0; padding-top: var(--space-12); }
   .telemetry { flex-direction: column; align-items: flex-start; gap: var(--space-4); margin-top: var(--space-12); }
@@ -853,6 +1010,7 @@ main h3 a { font-weight: 400; }
     border-bottom: 1px solid var(--color-ink);
   }
   .site-header.is-floating .site-nav a { color: var(--color-ink); }
+  .site-header.is-floating .theme-toggle { color: var(--color-ink); border-color: var(--color-ink); }
   .kicker, .muted, .link-row .note, .def-row p, .dir-row p,
   .specimen p, .tool-line, .footer-links a, .link-row .idx { color: var(--color-ink); }
   .sky .telemetry {

@@ -31,6 +31,41 @@
   setInterval(tick, 1000);
 })();
 
+// Theme toggle — the head script has already resolved and stamped the theme
+// before first paint; this only owns the flip, the label, and persistence.
+(function () {
+  var btn = document.querySelector('[data-theme-toggle]');
+  if (!btn) return;
+
+  var root = document.documentElement;
+  var media = window.matchMedia('(prefers-color-scheme: dark)');
+  var chosen = null;
+  try { chosen = localStorage.getItem('theme'); } catch (e) {}
+
+  function apply(theme) {
+    var label = theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+    root.setAttribute('data-theme', theme);
+    btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+    btn.setAttribute('aria-label', label);
+    btn.setAttribute('title', label);
+  }
+
+  apply(root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+
+  btn.addEventListener('click', function () {
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    apply(next);
+    chosen = next;
+    try { localStorage.setItem('theme', next); } catch (e) {}
+  });
+
+  // Until the reader makes an explicit choice, keep following the OS.
+  media.addEventListener('change', function (e) {
+    if (chosen) return;
+    apply(e.matches ? 'dark' : 'light');
+  });
+})();
+
 // Floating chrome (Apple §12) — the header is a translucent layer the page
 // scrolls under, and it only materialises once content is actually behind it.
 // Hysteresis on the threshold so a one-pixel scroll can't flicker the material.
