@@ -1,6 +1,13 @@
 /* akshat-website — design system from DESIGN.md (D-001–D-014 confirmed)
    Monochrome editorial: ink/gray/mist/paper, Raleway 300 display, Roboto body,
-   hairline structure, no shadows, sharp-or-pill radii. */
+   hairline structure, no shadows, sharp-or-pill radii.
+
+   Fluid-interface pass (Apple: "Designing Fluid Interfaces", "The Details of UI
+   Typography"): press feedback on pointer-down, translucent chrome that
+   materialises on scroll, size-specific tracking, a rem scale so the layout
+   grows with the reader's text size, and reduced-motion / reduced-transparency /
+   high-contrast equivalents. Motion stays critically damped — DESIGN.md's
+   "nothing bouncy" and Apple's damping 1.0 default agree. */
 
 :root {
   --color-ink: #000000;
@@ -11,24 +18,43 @@
   --font-display: 'Raleway', ui-sans-serif, system-ui, sans-serif;
   --font-body: 'Roboto', ui-sans-serif, system-ui, sans-serif;
 
-  --text-display: clamp(56px, 9vw, 112px);
-  --text-heading: clamp(40px, 6vw, 64px);
-  --text-heading-sm: 32px;
-  --text-subheading: 22px;
-  --text-body: 17px;
-  --text-body-sm: 15px;
-  --text-kicker: 12px;
-  --text-caption: 13px;
+  /* Type scale in rem, not px: a larger browser text size scales the layout
+     with the text instead of breaking it. */
+  --text-display: clamp(3.5rem, 9vw, 7rem);
+  --text-heading: clamp(2.5rem, 6vw, 4rem);
+  --text-heading-sm: 2rem;
+  --text-subheading: 1.375rem;
+  --text-body: 1.0625rem;
+  --text-body-sm: 0.9375rem;
+  --text-kicker: 0.75rem;
+  --text-caption: 0.8125rem;
 
-  --space-1: 4px;  --space-2: 8px;   --space-3: 12px;  --space-4: 16px;
-  --space-6: 24px; --space-8: 32px;  --space-12: 48px; --space-16: 64px;
-  --space-24: 96px; --space-32: 128px;
+  /* Tracking is size-specific: negative as type grows, slightly positive as it
+     shrinks. One letter-spacing value for every size is wrong somewhere. */
+  --track-display: -0.025em;
+  --track-heading: -0.018em;
+  --track-heading-sm: -0.012em;
+  --track-subheading: -0.005em;
+  --track-body: 0em;
+  --track-small: 0.008em;
+  --track-kicker: 0.14em;
 
-  --page-max-width: 1080px;
+  --space-1: 0.25rem; --space-2: 0.5rem;  --space-3: 0.75rem; --space-4: 1rem;
+  --space-6: 1.5rem;  --space-8: 2rem;    --space-12: 3rem;   --space-16: 4rem;
+  --space-24: 6rem;   --space-32: 8rem;
+
+  --page-max-width: 67.5rem;
+  --header-height: 4rem;
   --radius-pill: 9999px;
 
   --ease-glide: cubic-bezier(0.19, 1, 0.22, 1);
+  /* Mirror of --ease-glide for the return leg of a reversible transition */
+  --ease-glide-rev: cubic-bezier(0.78, 0, 0.81, 0);
+  /* Critically damped feel: fast start, no overshoot */
+  --ease-out: cubic-bezier(0.32, 0.72, 0, 1);
+  --duration-press: 0.1s;
   --duration-hover: 0.15s;
+  --duration-material: 0.35s;
   --duration-reveal: 0.8s;
 }
 
@@ -41,7 +67,9 @@ body {
   font-size: var(--text-body);
   font-weight: 400;
   line-height: 1.6;
+  letter-spacing: var(--track-body);
   color: var(--color-ink);
+  font-optical-sizing: auto;
 }
 
 /* Aurora atmosphere (D-021) — media layer only, never UI fill.
@@ -63,8 +91,9 @@ body::after {
   background: rgba(0, 0, 0, 0.35);
 }
 
-/* Solid paper surfaces floating over the sky */
-.sheet { background: var(--color-paper); }
+/* Solid paper surfaces floating over the sky. Opaque on purpose: a light
+   translucent surface must never stack on another light translucent one. */
+.sheet { background: var(--color-paper); position: relative; z-index: 1; }
 
 .container {
   max-width: var(--page-max-width);
@@ -80,18 +109,66 @@ a:focus-visible, button:focus-visible {
   outline-offset: 3px;
 }
 
-/* ---------- Navigation ---------- */
+.sky a:focus-visible, .site-header:not(.is-floating) a:focus-visible {
+  outline-color: var(--color-paper);
+}
+
+/* Kill the latency the browser adds on its own: no 300ms tap delay, no lagging
+   grey flash arriving instead of our own press state. */
+a, button, .btn, .link-row, .tag {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* ---------- Navigation — translucent chrome, content scrolls under ---------- */
 
 .site-header {
-  border-bottom: 1px solid var(--color-mist);
-  background: var(--color-paper);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: transparent;
+}
+
+/* The material lives on a pseudo-element so its bottom edge can be masked: a
+   scroll edge effect instead of a hard 1px divider, and it only appears once
+   floating chrome actually overlaps content. */
+.site-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(255, 255, 255, 0);
+  /* Grayscale, not Apple's saturate(180%): vibrancy would pull the aurora's
+     greens straight into the chrome, and the palette is monochrome. */
+  backdrop-filter: blur(0px) grayscale(1) brightness(1.04);
+  -webkit-backdrop-filter: blur(0px) grayscale(1) brightness(1.04);
+  opacity: 0;
+  /* Blur radius and opacity animate together, so the surface reads as a
+     material arriving rather than a plain fade. */
+  transition: opacity var(--duration-material) var(--ease-out),
+              background-color var(--duration-material) var(--ease-out),
+              backdrop-filter var(--duration-material) var(--ease-out),
+              -webkit-backdrop-filter var(--duration-material) var(--ease-out);
+  -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 62%, transparent 100%);
+}
+
+.site-header.is-floating::after {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.76);
+  backdrop-filter: blur(24px) grayscale(1) brightness(1.04);
+  -webkit-backdrop-filter: blur(24px) grayscale(1) brightness(1.04);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .site-header.is-floating::after { background: rgba(255, 255, 255, 0.94); }
 }
 
 .site-header .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 64px;
+  min-height: var(--header-height);
   flex-wrap: wrap;
   gap: var(--space-2) var(--space-4);
   padding-top: var(--space-3);
@@ -100,27 +177,45 @@ a:focus-visible, button:focus-visible {
 
 .wordmark {
   font-family: var(--font-display);
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 400;
-  color: var(--color-ink);
+  color: var(--color-paper);
   text-decoration: none;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  transition: color var(--duration-material) var(--ease-out),
+              transform var(--duration-press) var(--ease-out);
 }
 
 .site-nav { display: flex; gap: var(--space-6); }
 
 .site-nav a {
-  font-size: 14px;
+  font-size: 0.875rem;
   white-space: nowrap;
-  color: var(--color-gray);
+  color: var(--color-mist);
   text-decoration: none;
-  transition: color var(--duration-hover) ease;
+  transition: color var(--duration-hover) ease,
+              transform var(--duration-press) var(--ease-out);
 }
 
-.site-nav a:hover { color: var(--color-ink); }
+.site-nav a:hover { color: var(--color-paper); }
 
-.site-nav a[aria-current="page"] { color: var(--color-ink); font-weight: 500; }
+.site-nav a[aria-current="page"] { color: var(--color-paper); font-weight: 500; }
+
+/* Once the bar becomes a light material, the type inverts. Vibrancy over
+   translucency: a touch more contrast and tracking than flat grey. */
+.site-header.is-floating .wordmark { color: var(--color-ink); }
+
+.site-header.is-floating .site-nav a {
+  color: var(--color-gray);
+  letter-spacing: 0.012em;
+}
+
+.site-header.is-floating .site-nav a:hover,
+.site-header.is-floating .site-nav a[aria-current="page"] { color: var(--color-ink); }
+
+/* Feedback on pointer-down, never only on release */
+.site-nav a:active, .wordmark:active, .footer-links a:active { transform: scale(0.96); }
 
 /* ---------- Typography ---------- */
 
@@ -130,7 +225,7 @@ h1, h2 { font-family: var(--font-display); font-weight: 400; }
   font-size: var(--text-display);
   font-weight: 300;
   line-height: 1.02;
-  letter-spacing: -0.02em;
+  letter-spacing: var(--track-display);
   text-transform: uppercase;
 }
 
@@ -138,13 +233,13 @@ h1, h2 { font-family: var(--font-display); font-weight: 400; }
   font-size: var(--text-heading);
   font-weight: 300;
   line-height: 1.08;
-  letter-spacing: -0.015em;
+  letter-spacing: var(--track-heading);
 }
 
 h2 {
   font-size: var(--text-heading-sm);
   line-height: 1.15;
-  letter-spacing: -0.01em;
+  letter-spacing: var(--track-heading-sm);
 }
 
 h3 {
@@ -158,7 +253,8 @@ h3 {
   font-family: var(--font-body);
   font-size: var(--text-kicker);
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--track-kicker);
+  line-height: 1.3;
   text-transform: uppercase;
   color: var(--color-gray);
   margin-bottom: var(--space-3);
@@ -168,6 +264,7 @@ h3 {
   font-family: var(--font-display);
   font-size: var(--text-subheading);
   line-height: 1.3;
+  letter-spacing: var(--track-subheading);
 }
 
 p + p { margin-top: var(--space-4); }
@@ -195,7 +292,7 @@ main h3 a { font-weight: 400; }
 
 .section-head { margin-bottom: var(--space-12); }
 
-.prose { max-width: 720px; }
+.prose { max-width: 45rem; }
 .prose h2 { margin-bottom: var(--space-4); }
 
 /* ---------- Hero (telemetry layout, D-015) ---------- */
@@ -204,7 +301,7 @@ main h3 a { font-weight: 400; }
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: calc(100svh - 65px);
+  min-height: calc(100svh - var(--header-height));
   padding-top: var(--space-12);
   padding-bottom: var(--space-6);
 }
@@ -213,7 +310,7 @@ main h3 a { font-weight: 400; }
 
 .hero .lede { margin-bottom: var(--space-6); }
 
-.hero-copy { max-width: 620px; }
+.hero-copy { max-width: 38.75rem; }
 
 .hero-actions {
   display: flex;
@@ -223,10 +320,9 @@ main h3 a { font-weight: 400; }
   margin-top: var(--space-8);
 }
 
-[data-parallax] {
-  transition: transform 0.45s var(--ease-glide);
-  will-change: transform;
-}
+/* No CSS transition here on purpose: the spring in site.js owns this transform
+   frame by frame, and a transition would fight it on every reversal. */
+[data-parallax] { will-change: transform; }
 
 .telemetry {
   display: flex;
@@ -256,9 +352,9 @@ main h3 a { font-weight: 400; }
 
 .hours-note {
   text-transform: none;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--track-small);
   font-size: var(--text-caption);
-  max-width: 340px;
+  max-width: 21.25rem;
   text-align: right;
 }
 
@@ -268,7 +364,7 @@ main h3 a { font-weight: 400; }
   margin-top: var(--space-6);
   padding-top: var(--space-4);
   border-top: 1px solid var(--color-mist);
-  max-width: 560px;
+  max-width: 35rem;
 }
 
 .availability a, .availability span {
@@ -279,15 +375,24 @@ main h3 a { font-weight: 400; }
   line-height: 1.7;
 }
 
-.availability a { text-decoration: none; }
+.availability a {
+  text-decoration: none;
+  display: inline-block;
+  transition: transform var(--duration-press) var(--ease-out);
+}
+
+.availability a:active { transform: scale(0.985); }
 
 .availability-arrow {
   display: inline-block;
   margin-left: var(--space-2);
-  transition: transform 0.3s var(--ease-glide);
+  transition: transform 0.3s var(--ease-glide-rev);
 }
 
-.availability a:hover .availability-arrow { transform: translateX(6px); }
+.availability a:hover .availability-arrow {
+  transform: translateX(0.375rem);
+  transition-timing-function: var(--ease-glide);
+}
 
 .sky .availability { border-top-color: rgba(255, 255, 255, 0.3); }
 
@@ -316,9 +421,21 @@ main h3 a { font-weight: 400; }
   border-color: rgba(255, 255, 255, 0.4);
 }
 
-.sky .btn:hover { background: transparent; border-color: var(--color-paper); }
+.sky .btn:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--color-paper); }
 
-.sky .telemetry { border-top-color: rgba(255, 255, 255, 0.3); }
+.sky .btn:active { background: rgba(255, 255, 255, 0.2); border-color: var(--color-paper); }
+
+/* The telemetry sits on busy sky, so it gets its own darker material: heavier
+   material separates a structural region and keeps the numbers legible. */
+.sky .telemetry {
+  border-top-color: rgba(255, 255, 255, 0.3);
+  margin-left: calc(var(--space-6) * -1);
+  margin-right: calc(var(--space-6) * -1);
+  padding: var(--space-4) var(--space-6);
+  background: rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(16px) grayscale(1);
+  -webkit-backdrop-filter: blur(16px) grayscale(1);
+}
 
 .sky .telemetry .clock { color: var(--color-paper); }
 
@@ -340,15 +457,37 @@ main h3 a { font-weight: 400; }
 
 .js [data-reveal].in { opacity: 1; transform: none; }
 
+/* Rows arrive in the order they'll be read, so the in-between frames point at
+   the outcome instead of everything landing on the same frame. */
+.js [data-reveal] .link-row,
+.js [data-reveal] .def-row,
+.js [data-reveal] .dir-row,
+.js [data-reveal] .specimen {
+  opacity: 0;
+  transform: translateY(0.75rem);
+  transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out);
+}
+
+.js [data-reveal].in .link-row,
+.js [data-reveal].in .def-row,
+.js [data-reveal].in .dir-row,
+.js [data-reveal].in .specimen { opacity: 1; transform: none; }
+
+.js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen):nth-child(1) { transition-delay: 0.06s; }
+.js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen):nth-child(2) { transition-delay: 0.12s; }
+.js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen):nth-child(3) { transition-delay: 0.18s; }
+.js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen):nth-child(4) { transition-delay: 0.24s; }
+.js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen):nth-child(5) { transition-delay: 0.30s; }
+.js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen):nth-child(n + 6) { transition-delay: 0.36s; }
+
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(1rem); }
   to   { opacity: 1; transform: none; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .reveal { animation: none; }
-  .js [data-reveal], [data-reveal] { opacity: 1; transform: none; transition: none; }
-  * { transition-duration: 0.01ms !important; }
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 /* ---------- Buttons ---------- */
@@ -358,16 +497,27 @@ main h3 a { font-weight: 400; }
   font-family: var(--font-body);
   font-size: var(--text-body-sm);
   font-weight: 400;
+  letter-spacing: var(--track-small);
   color: var(--color-ink);
   background: transparent;
   border: 1px solid var(--color-ink);
   border-radius: var(--radius-pill);
-  padding: 12px 28px;
+  padding: 0.75rem 1.75rem;
   text-decoration: none;
-  transition: background var(--duration-hover) ease, color var(--duration-hover) ease;
+  transition: background var(--duration-hover) ease,
+              color var(--duration-hover) ease,
+              border-color var(--duration-hover) ease,
+              transform var(--duration-press) var(--ease-out);
 }
 
 .btn:hover { background: var(--color-ink); color: var(--color-paper); }
+
+/* It commits on release, but it answers on contact. */
+.btn:active {
+  background: var(--color-ink);
+  color: var(--color-paper);
+  transform: scale(0.97);
+}
 
 /* ---------- Definition rows (Work: What I build) ---------- */
 
@@ -375,7 +525,7 @@ main h3 a { font-weight: 400; }
 
 .def-row {
   display: grid;
-  grid-template-columns: minmax(200px, 300px) minmax(0, 1fr);
+  grid-template-columns: minmax(12.5rem, 18.75rem) minmax(0, 1fr);
   gap: var(--space-8);
   padding: var(--space-8) 0;
   border-bottom: 1px solid var(--color-mist);
@@ -386,6 +536,7 @@ main h3 a { font-weight: 400; }
   font-size: var(--text-subheading);
   font-weight: 400;
   line-height: 1.25;
+  letter-spacing: var(--track-subheading);
 }
 
 .def-row p { color: var(--color-gray); margin: 0; }
@@ -406,8 +557,9 @@ main h3 a { font-weight: 400; }
 
 .tool-line {
   font-size: var(--text-body-sm);
+  letter-spacing: var(--track-small);
   color: var(--color-gray);
-  max-width: 720px;
+  max-width: 45rem;
 }
 
 /* ---------- Big link rows (Home: onward links) ---------- */
@@ -416,18 +568,23 @@ main h3 a { font-weight: 400; }
 
 .link-row {
   display: grid;
-  grid-template-columns: 56px minmax(0, 1fr) auto;
+  grid-template-columns: 3.5rem minmax(0, 1fr) auto;
   gap: var(--space-6);
   align-items: baseline;
-  padding: var(--space-8) 0;
+  padding: var(--space-8) var(--space-4);
+  margin-left: calc(var(--space-4) * -1);
+  margin-right: calc(var(--space-4) * -1);
   border-bottom: 1px solid var(--color-mist);
   text-decoration: none;
   color: var(--color-ink);
+  background: rgba(0, 0, 0, 0);
+  transition: background var(--duration-hover) ease,
+              transform var(--duration-press) var(--ease-out);
 }
 
 .link-row .idx {
   font-size: var(--text-kicker);
-  letter-spacing: 0.14em;
+  letter-spacing: var(--track-kicker);
   color: var(--color-gray);
 }
 
@@ -436,23 +593,43 @@ main h3 a { font-weight: 400; }
   font-size: var(--text-heading-sm);
   font-weight: 300;
   line-height: 1.15;
-  letter-spacing: -0.01em;
+  letter-spacing: var(--track-heading-sm);
+  transition: transform 0.3s var(--ease-glide-rev);
 }
 
 .link-row .arrow {
   font-family: var(--font-body);
   font-size: var(--text-subheading);
   color: var(--color-gray);
-  transition: transform 0.3s var(--ease-glide), color var(--duration-hover) ease;
+  transition: transform 0.3s var(--ease-glide-rev), color var(--duration-hover) ease;
 }
 
 .link-row .note {
   grid-column: 2;
   color: var(--color-gray);
   font-size: var(--text-body-sm);
+  letter-spacing: var(--track-small);
 }
 
-.link-row:hover .arrow { transform: translateX(8px); color: var(--color-ink); }
+/* Hover hints in the direction of the click: the row leans toward where it's
+   taking you, not just the arrow. */
+.link-row:hover { background: rgba(0, 0, 0, 0.025); }
+
+.link-row:hover .arrow {
+  transform: translateX(0.5rem);
+  color: var(--color-ink);
+  transition-timing-function: var(--ease-glide);
+}
+
+.link-row:hover .title {
+  transform: translateX(0.25rem);
+  transition-timing-function: var(--ease-glide);
+}
+
+.link-row:active {
+  background: rgba(0, 0, 0, 0.05);
+  transform: scale(0.995);
+}
 
 /* ---------- Tag pills ---------- */
 
@@ -460,10 +637,11 @@ main h3 a { font-weight: 400; }
 
 .tag {
   font-size: var(--text-caption);
+  letter-spacing: var(--track-small);
   color: var(--color-gray);
   border: 1px solid var(--color-mist);
   border-radius: var(--radius-pill);
-  padding: 6px 14px;
+  padding: 0.375rem 0.875rem;
   transition: border-color var(--duration-hover) ease;
 }
 
@@ -494,7 +672,7 @@ main h3 a { font-weight: 400; }
 
 .dir-row {
   display: grid;
-  grid-template-columns: minmax(140px, 240px) minmax(0, 1fr);
+  grid-template-columns: minmax(8.75rem, 15rem) minmax(0, 1fr);
   gap: var(--space-2) var(--space-8);
   padding: var(--space-8) 0;
   border-bottom: 1px solid var(--color-mist);
@@ -505,13 +683,25 @@ main h3 a { font-weight: 400; }
   font-size: var(--text-subheading);
   font-weight: 400;
   line-height: 1.25;
+  letter-spacing: var(--track-subheading);
 }
 
-.dir-row .dir-link {
-  font-size: var(--text-body);
+.dir-row .dir-link { font-size: var(--text-body); }
+
+.dir-row .dir-link a {
+  display: inline-block;
+  transition: transform var(--duration-press) var(--ease-out),
+              text-decoration-color var(--duration-hover) ease;
 }
 
-.dir-row p { color: var(--color-gray); margin: 0; font-size: var(--text-body-sm); }
+.dir-row .dir-link a:active { transform: scale(0.98); }
+
+.dir-row p {
+  color: var(--color-gray);
+  margin: 0;
+  font-size: var(--text-body-sm);
+  letter-spacing: var(--track-small);
+}
 
 /* ---------- Inverse band (D-001, D-014: max one per page) ---------- */
 
@@ -537,7 +727,7 @@ main h3 a { font-weight: 400; }
 
 .band h2 { margin-bottom: var(--space-4); }
 
-.band p { color: var(--color-paper); max-width: 620px; }
+.band p { color: var(--color-paper); max-width: 38.75rem; }
 
 .band p a {
   color: var(--color-paper);
@@ -552,7 +742,9 @@ main h3 a { font-weight: 400; }
 
 .band .btn { color: var(--color-paper); border-color: rgba(255, 255, 255, 0.3); }
 
-.band .btn:hover { background: transparent; border-color: var(--color-paper); }
+.band .btn:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--color-paper); }
+
+.band .btn:active { background: rgba(255, 255, 255, 0.2); border-color: var(--color-paper); }
 
 .band .hero-actions { margin-top: var(--space-8); }
 
@@ -563,6 +755,8 @@ main h3 a { font-weight: 400; }
   background: var(--color-paper);
   padding-top: var(--space-12);
   padding-bottom: var(--space-12);
+  position: relative;
+  z-index: 1;
 }
 
 .site-footer .container {
@@ -578,19 +772,24 @@ main h3 a { font-weight: 400; }
 .footer-links { display: flex; flex-wrap: wrap; gap: var(--space-4) var(--space-6); }
 
 .footer-links a {
+  display: inline-block;
   font-size: var(--text-caption);
+  letter-spacing: var(--track-small);
   color: var(--color-gray);
   text-decoration: none;
-  transition: color var(--duration-hover) ease;
+  transition: color var(--duration-hover) ease,
+              transform var(--duration-press) var(--ease-out);
 }
 
 .footer-links a:hover { color: var(--color-ink); }
 
 /* ---------- Responsive ---------- */
 
-@media (max-width: 720px) {
+@media (max-width: 45rem) {
+  /* Display type needs less negative tracking once it's small */
+  :root { --track-display: -0.015em; --track-heading: -0.012em; }
   .site-nav { gap: var(--space-4); flex-wrap: wrap; }
-  .site-nav a { font-size: 13px; }
+  .site-nav a { font-size: 0.8125rem; }
   .section, .page-head { padding-top: var(--space-16); padding-bottom: var(--space-16); }
   .hero { min-height: 0; padding-top: var(--space-12); }
   .telemetry { flex-direction: column; align-items: flex-start; gap: var(--space-4); margin-top: var(--space-12); }
@@ -601,5 +800,68 @@ main h3 a { font-weight: 400; }
   .def-row, .dir-row { grid-template-columns: 1fr; gap: var(--space-2); }
   .specimen-grid { grid-template-columns: 1fr; }
   .specimen { padding: var(--space-8) var(--space-6); }
-  .link-row { grid-template-columns: 40px minmax(0, 1fr) auto; }
+  .link-row { grid-template-columns: 2.5rem minmax(0, 1fr) auto; }
+}
+
+/* ---------- Accessibility preferences ---------- */
+
+/* Reduced motion isn't no feedback — it's a cross-fade instead of a slide.
+   Transform transitions go; opacity and colour stay. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-property: opacity, color, background-color, border-color,
+                         text-decoration-color, outline-color !important;
+    transition-duration: 0.2s !important;
+    animation-duration: 0.2s !important;
+    animation-iteration-count: 1 !important;
+  }
+  .reveal { animation: fade-in 0.2s ease-out both; }
+  .js [data-reveal],
+  .js [data-reveal] :is(.link-row, .def-row, .dir-row, .specimen) { transform: none; }
+  .js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen) { transition-delay: 0s; }
+  [data-parallax] { transform: none !important; }
+}
+
+/* Translucency off: frostier means solid here, and the blur goes with it. */
+@media (prefers-reduced-transparency: reduce) {
+  .site-header.is-floating::after {
+    background: var(--color-paper);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    -webkit-mask-image: none;
+            mask-image: none;
+    border-bottom: 1px solid var(--color-mist);
+  }
+  .sky .telemetry {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  body::after { background: rgba(0, 0, 0, 0.55); }
+  .band::before { background: rgba(0, 0, 0, 0.72); }
+}
+
+/* High contrast: near-solid surfaces with defined borders, and muted grey stops
+   being grey. */
+@media (prefers-contrast: more) {
+  .site-header.is-floating::after {
+    background: var(--color-paper);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    -webkit-mask-image: none;
+            mask-image: none;
+    border-bottom: 1px solid var(--color-ink);
+  }
+  .site-header.is-floating .site-nav a { color: var(--color-ink); }
+  .kicker, .muted, .link-row .note, .def-row p, .dir-row p,
+  .specimen p, .tool-line, .footer-links a, .link-row .idx { color: var(--color-ink); }
+  .sky .telemetry {
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  body::after { background: rgba(0, 0, 0, 0.6); }
+  .band::before { background: rgba(0, 0, 0, 0.75); }
+  .tag { border-color: var(--color-gray); }
+  main p a, main li a, main h3 a { text-decoration-color: var(--color-ink); }
 }
