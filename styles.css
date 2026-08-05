@@ -182,7 +182,6 @@ a, button, .btn, .link-row, .tag {
   color: var(--color-paper);
   text-decoration: none;
   letter-spacing: 0.04em;
-  text-transform: uppercase;
   transition: color var(--duration-material) var(--ease-out),
               transform var(--duration-press) var(--ease-out);
 }
