@@ -1,9 +1,8 @@
 // Live clocks (D-015) — content, not animation: tick every second.
-// Three zones side by side. PT and ET are the working hours; IST is where he sleeps.
+// Two zones side by side. PT is the working day; IST is where he sleeps.
 (function () {
   var zones = [
     { key: 'pt', tz: 'America/Los_Angeles' },
-    { key: 'et', tz: 'America/New_York' },
     { key: 'ist', tz: 'Asia/Kolkata' }
   ];
 
