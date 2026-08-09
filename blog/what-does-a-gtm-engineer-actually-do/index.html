@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Theme is resolved in the same blocking script that sets .js, before first
+       paint, so a dark-mode reader never sees a frame of white. -->
+  <script>
+  (function () {
+    var root = document.documentElement;
+    root.className += ' js';
+    var stored = null;
+    try { stored = localStorage.getItem('theme'); } catch (e) {}
+    root.setAttribute('data-theme', stored === 'dark' || stored === 'light' ? stored :
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+    var view = null;
+    try { view = localStorage.getItem('view'); } catch (e) {}
+    root.setAttribute('data-view', view === 'machine' ? 'machine' : 'default');
+  })();
+  </script>
+  <title>What Does a GTM Engineer Actually Do? My Mental Model After Trying to Become One — Akshat Tiwari</title>
+  <meta name="description" content="GTM Engineering sits somewhere between sales, operations, data, and software. Here's the framework I use to understand it.">
+  <link rel="canonical" href="https://www.akshatiwari.com/blog/what-does-a-gtm-engineer-actually-do/">
+  <meta property="og:title" content="What Does a GTM Engineer Actually Do? My Mental Model After Trying to Become One">
+  <meta property="og:description" content="GTM Engineering sits somewhere between sales, operations, data, and software. Here's the framework I use to understand it.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.akshatiwari.com/blog/what-does-a-gtm-engineer-actually-do/">
+  <meta property="og:image" content="https://www.akshatiwari.com/assets/og-card.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="What Does a GTM Engineer Actually Do? My Mental Model After Trying to Become One">
+  <meta name="twitter:description" content="GTM Engineering sits somewhere between sales, operations, data, and software. Here's the framework I use to understand it.">
+  <meta name="twitter:image" content="https://www.akshatiwari.com/assets/og-card.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23000000'/><text x='50' y='72' font-size='64' font-family='sans-serif' fill='%23ffffff' text-anchor='middle'>A</text></svg>">
+  <link rel="alternate" type="application/rss+xml" title="Akshat Tiwari — Blog" href="https://www.akshatiwari.com/blog/feed.xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/machine-view.js" defer></script>
+  <script src="/site.js" defer></script>
+  <script src="/_vercel/insights/script.js" defer></script>
+  <script src="/_vercel/speed-insights/script.js" defer></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "What Does a GTM Engineer Actually Do? My Mental Model After Trying to Become One",
+    "description": "GTM Engineering sits somewhere between sales, operations, data, and software. Here's the framework I use to understand it.",
+    "datePublished": "2026-08-10",
+    "dateModified": "2026-08-10",
+    "author": {
+      "@type": "Person",
+      "name": "Akshat Tiwari",
+      "url": "https://www.akshatiwari.com/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Akshat Tiwari",
+      "url": "https://www.akshatiwari.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://www.akshatiwari.com/blog/what-does-a-gtm-engineer-actually-do/"
+    },
+    "image": "https://www.akshatiwari.com/assets/og-card.jpg"
+  }
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="wordmark" href="/">Akshat Tiwari</a>
+    <div class="header-right">
+      <nav class="site-nav" aria-label="Site">
+        <a href="/">Home</a>
+        <a href="/work/">Work</a>
+        <a href="/blog/" aria-current="page">Blog</a>
+        <a href="/beyond-work/">Beyond Work</a>
+        <a href="/contact/">Contact</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle
+              aria-pressed="false" aria-label="Switch to dark mode" title="Switch to dark mode">
+        <span class="theme-icon theme-icon-moon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.2 14.6A8.6 8.6 0 0 1 9.4 3.8 8.6 8.6 0 1 0 20.2 14.6Z"/></svg>
+        </span>
+        <span class="theme-icon theme-icon-sun" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.4"/><path d="M12 2.4v2.1M12 19.5v2.1M2.4 12h2.1M19.5 12h2.1M5.2 5.2l1.5 1.5M17.3 17.3l1.5 1.5M18.8 5.2l-1.5 1.5M6.7 17.3l-1.5 1.5"/></svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="page-head container reveal sky">
+    <div class="prose">
+      <p class="kicker"><time datetime="2026-08-10">10 August 2026</time></p>
+      <h1 class="page-title">What Does a GTM Engineer Actually Do? My Mental Model After Trying to Become One</h1>
+    </div>
+  </section>
+
+  <div class="sheet">
+  <article class="section container prose post-body" data-reveal>
+<p>For the longest time, I had no idea what a GTM Engineer actually did.</p>
+<p>I kept seeing the title everywhere.</p>
+<p>GTM Engineer. Growth Engineer. RevOps. Sales Engineer. Growth Ops. Sales Ops.</p>
+<p>Some job descriptions made GTM Engineering sound like sales automation. Others made it sound like data engineering for revenue teams. And some basically wanted a software engineer who also understood how to sell.</p>
+<p>The more I looked into it, the more confusing it became.</p>
+<p>Things started making more sense only when I stopped trying to understand the role through job descriptions and started looking at the actual problems GTM teams were trying to solve.</p>
+<p>Who should we sell to?</p>
+<p>How do we know which companies are actually worth spending time on?</p>
+<p>How do we research hundreds or thousands of accounts without doing everything manually?</p>
+<p>How do we turn signals into actions?</p>
+<p>How do we make outbound more relevant?</p>
+<p>How do we connect all of this with the CRM?</p>
+<p>And increasingly:</p>
+<p>How do we use AI without turning the entire sales process into spam?</p>
+<p>Once I started thinking about those problems, GTM Engineering clicked for me.</p>
+<p>My current mental model is pretty simple:</p>
+<blockquote><p>A GTM Engineer turns go-to-market ideas into systems that can actually run.</p></blockquote>
+<p>That is probably the easiest way I know to explain the role.</p>
+<p>And the GTM Engineering loop looks like this:</p>
+<p>Strategy → Systems → Execution → Data → Better Strategy</p>
+<p>You just need to run the loop over and over again.</p>
+<h2>So what does a GTM Engineer actually build?</h2>
+<p>This was the question that helped me understand the role the most.</p>
+<p>A GTM Engineer might build things like:</p>
+<ul><li>ICP scoring systems</li><li>lead enrichment pipelines</li><li>trigger-based prospecting systems</li><li>personalised outbound workflows</li><li>CRM automations</li><li>sales-call summarisation workflows</li><li>automated follow-up systems</li><li>AI agents that assist the sales team</li></ul>
+<p>and many more things…</p>
+<p>One project I find especially useful for understanding the role is an AI prospect research agent. And it is something that I have personally built at my work for my team.</p>
+<p>At first, it sounds like an AI project.</p>
+<p>But look at what actually has to happen.</p>
+<p>You need to define the ICP.</p>
+<p>You need company data.</p>
+<p>You need enrichment.</p>
+<p>You need to decide which signals matter.</p>
+<p>You need a way of scoring accounts.</p>
+<p>You need research from websites, LinkedIn, news, job postings or other sources.</p>
+<p>You need rules for choosing the right buyer.</p>
+<p>You need somewhere to store the information.</p>
+<p>You probably need the output inside a CRM.</p>
+<p>And eventually you need to measure whether any of that research actually helped sales.</p>
+<p>That isn't purely engineering.</p>
+<p>It isn't purely sales either.</p>
+<p>It is building infrastructure around the sales process.</p>
+<p>That's GTM Engineering.</p>
+<p>A line I keep coming back to is:</p>
+<blockquote><p>A GTM Engineer doesn't necessarily do the selling. They build the machine that makes selling more intelligent.</p></blockquote>
+<h2>My three-layer model for GTM Engineering</h2>
+<p>The easiest framework I've found is to think about GTM systems in three layers:</p>
+<h3>1. Data</h3>
+<p>First, you need to know who you are dealing with.</p>
+<p>That includes things like:</p>
+<ul><li>company data</li><li>people data</li><li>firmographics</li><li>technographics</li><li>job postings</li><li>funding events</li><li>hiring signals</li><li>product usage</li><li>website activity</li><li>intent data</li><li>CRM history</li></ul>
+<p>The question at this layer is:</p>
+<p><strong>Who should we care about?</strong></p>
+<p>Good GTM starts with good inputs.</p>
+<p>If your data is bad, almost everything downstream becomes worse.</p>
+<h3>2. Logic</h3>
+<p>This is where the system decides what the data actually means.</p>
+<p>Should this company qualify?</p>
+<p>How strong is the fit?</p>
+<p>Which persona should we contact?</p>
+<p>Should the account go to sales right now?</p>
+<p>Which signal is important enough to trigger outreach?</p>
+<p>How should the messaging change based on company type?</p>
+<p>This layer includes things like:</p>
+<ul><li>segmentation</li><li>ICP scoring</li><li>qualification</li><li>prioritisation</li><li>routing</li><li>personalisation rules</li><li>campaign logic</li></ul>
+<p>The question here is:</p>
+<p><strong>What should we do with what we know?</strong></p>
+<p>This is probably the most underrated part of GTM Engineering.</p>
+<p>You can have incredible tools and terrible logic.</p>
+<p>Automation just helps you make the wrong decision faster.</p>
+<h3>3. Execution</h3>
+<p>Finally, something needs to happen.</p>
+<p>That could mean:</p>
+<ul><li>create a CRM record</li><li>enrich a contact</li><li>send data to Clay</li><li>trigger an email sequence</li><li>notify an AE</li><li>generate account research</li><li>create a task</li><li>update a pipeline stage</li><li>send information into Slack</li></ul>
+<p>This is where APIs, webhooks, scripts, workflow automation platforms, CRMs and AI agents come in.</p>
+<p>The question becomes:</p>
+<p><strong>How do we make the action happen reliably?</strong></p>
+<p>So my current model is:</p>
+<p><strong>Data → Logic → Execution</strong></p>
+<p>Most GTM systems I've looked at can be broken down into those three layers.</p>
+<h2>How is this different from RevOps, Sales Engineering or Growth Engineering?</h2>
+<p>This is where definitions get messy.</p>
+<p>Especially at startups.</p>
+<p>A RevOps person might absolutely build automations.</p>
+<p>A growth engineer might work on acquisition systems.</p>
+<p>A sales engineer might write code.</p>
+<p>And a GTM Engineer at one company might look completely different from a GTM Engineer somewhere else.</p>
+<p>But the distinction I currently use is this:</p>
+<p><strong>SDRs</strong> execute prospecting and conversations.</p>
+<p><strong>RevOps</strong> makes the overall revenue organization operate effectively.</p>
+<p><strong>Sales Engineers</strong> help customers understand and technically evaluate a product during the sales process.</p>
+<p><strong>Growth Engineers</strong> usually build product or engineering experiments that drive acquisition, activation or retention.</p>
+<p><strong>GTM Engineers</strong> build technical systems around how a company finds, understands, reaches and converts customers.</p>
+<p>These boundaries are obviously not perfect.</p>
+<p>And honestly, I don't think they need to be.</p>
+<p>The interesting thing is the direction all of these roles are moving in.</p>
+<p>Sales is becoming more technical.</p>
+<p>Engineering tools are becoming easier to use.</p>
+<p>And AI is making it possible for relatively small teams to build GTM systems that would have required much larger teams a few years ago.</p>
+<h2>Why is GTM Engineering becoming a thing now?</h2>
+<p>I think a few trends are colliding.</p>
+<p>Companies now have access to enormous amounts of commercial data.</p>
+<p>Almost every major GTM tool has an API.</p>
+<p>Workflow automation is easier than ever.</p>
+<p>LLMs can process messy information extremely well.</p>
+<p>And AI agents are starting to make multi-step workflows much more practical.</p>
+<p>A lot of sales work historically involved humans moving information from one place to another.</p>
+<p>Research this company.</p>
+<p>Open LinkedIn.</p>
+<p>Read their website.</p>
+<p>Find the right person.</p>
+<p>Copy information into the CRM.</p>
+<p>Write a first draft.</p>
+<p>Create a task.</p>
+<p>Remind yourself to follow up.</p>
+<p>None of those activities individually require particularly advanced reasoning.</p>
+<p>But together they consume an enormous amount of time.</p>
+<p>That doesn't mean AI suddenly replaces salespeople.</p>
+<p>I think that framing is too simplistic.</p>
+<p>What seems much more interesting is this:</p>
+<blockquote><p>One salesperson with great GTM infrastructure can operate very differently from one without it.</p></blockquote>
+<p>The salesperson can spend less time collecting information and more time thinking.</p>
+<p>Less time updating systems and more time talking to customers.</p>
+<p>Less time researching random accounts and more time focusing on the right ones.</p>
+<p>That is the shift I find interesting.</p>
+<p>If you can take a GTM problem and turn it into logic.</p>
+<p>Take that logic and turn it into a system.</p>
+<p>And measure whether that system is actually improving anything.</p>
+<p>The ultimate goal of creating revenue leverage can easily be reached.</p>
+<h2>Where I'm at right now</h2>
+<p>I'm still figuring this role out.</p>
+<p>My background started much closer to technology and data than sales.</p>
+<p>Over time, I found myself becoming increasingly interested in startups, sales, growth and how companies actually get products into people's hands.</p>
+<p>GTM Engineering feels like an interesting intersection of those worlds.</p>
+<p>Right now I'm learning it by doing.</p>
+<p>Breaking things.</p>
+<p>Rebuilding them.</p>
+<p>And slowly developing my own opinions about what actually works.</p>
+<p>So I don't consider this post a definitive explanation of GTM Engineering.</p>
+<p>It's my current mental model.</p>
+<p>And I fully expect parts of it to change.</p>
+<p>That's also one of the reasons I'm starting this blog.</p>
+<p>Instead of waiting until I feel like an expert, I want to document what I'm building, what I'm learning and how my thinking changes over time.</p>
+<p>If I do this properly, maybe a year from now I'll come back to this article and disagree with half of it.</p>
+<p>I think that would be a good thing.</p>
+  </article>
+
+  <section class="section container" data-reveal>
+    <a class="post-back" href="/blog/"><span class="post-back-arrow" aria-hidden="true">&larr;</span>All posts</a>
+  </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p class="kicker">Kanpur, India</p>
+    <div class="footer-links">
+      <a href="mailto:pi4akshat@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/akshatiwari/">LinkedIn</a>
+      <a href="https://github.com/akshatiwarix">GitHub</a>
+      <a href="https://x.com/whyakshat">X</a>
+      <a href="https://www.youtube.com/@beyondakshat">YouTube</a>
+    </div>
+  </div>
+</footer>
+
+<button class="mv-switch" type="button" role="switch" aria-checked="false" data-machine-switch
+        aria-label="Machine view: show only the text on this page"
+        title="Machine view: show only the text on this page">
+  <span class="mv-track" aria-hidden="true">
+    <span class="mv-knob">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="3.2" r="1.2"/><path d="M12 4.4v3.1"/><rect x="4" y="7.5" width="16" height="12.5" rx="3.5"/><path d="M9.2 13.2h.01M14.8 13.2h.01M9.6 16.8h4.8"/></svg>
+    </span>
+  </span>
+</button>
+
+</body>
+</html>
