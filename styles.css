@@ -181,6 +181,22 @@ body::after {
   transition: background-color var(--duration-material) var(--ease-out);
 }
 
+/* A page shorter than the viewport — a blog index holding one post — used to
+   stop mid-screen and leave a band of sky under the footer, which read as the
+   paper having run out rather than as a design. The page is a column that
+   fills the screen, the sheet absorbs whatever slack is left, and the footer
+   lands on the bottom edge. Pages taller than the viewport are unaffected. */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+main { flex: 1 0 auto; display: flex; flex-direction: column; }
+
+main > .sheet { flex: 1 0 auto; }
+
 .container {
   max-width: var(--page-max-width);
   margin: 0 auto;
