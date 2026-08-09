@@ -584,9 +584,6 @@ ${group.posts.map(postRow).join('\n')}
     <div class="prose">
       <h1 class="page-title">Blog</h1>
       <p>${SITE.blogIntro}</p>
-      <div class="hero-actions">
-        <a class="btn" href="/blog/feed.xml">RSS feed</a>
-      </div>
     </div>
   </section>
 
