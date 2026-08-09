@@ -4,3 +4,9 @@ PROOF-OF-WORK.md
 # Agent skills are tooling for building the site, not part of it.
 .agents/
 skills-lock.json
+
+# Blog sources and the script that renders them. Vercel runs no build command —
+# it serves the HTML in blog/, which build.js writes and git tracks.
+posts/
+build.js
+WRITING.md

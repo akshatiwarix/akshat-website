@@ -896,6 +896,210 @@ main h3 a { font-weight: 400; }
   transform: scale(0.995);
 }
 
+/* ---------- Blog: post rows (index and Home's latest block) ---------- */
+
+/* The same row as .link-row, one step quieter: a blog index is a long list, so
+   the title drops from heading to subheading size and the index number is
+   replaced by the date — the only thing worth scanning down a column. */
+
+.post-year + .post-year { margin-top: var(--space-16); }
+
+.post-rows { border-top: 1px solid var(--color-mist); }
+
+.post-row {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr) auto;
+  gap: var(--space-2) var(--space-6);
+  align-items: baseline;
+  padding: var(--space-6) var(--space-4);
+  margin-left: calc(var(--space-4) * -1);
+  margin-right: calc(var(--space-4) * -1);
+  border-bottom: 1px solid var(--color-mist);
+  text-decoration: none;
+  color: var(--color-ink);
+  background: rgba(0, 0, 0, 0);
+  transition: background var(--duration-hover) ease,
+              transform var(--duration-press) var(--ease-out);
+}
+
+.post-row-date {
+  font-size: var(--text-kicker);
+  letter-spacing: var(--track-kicker);
+  text-transform: uppercase;
+  color: var(--color-gray);
+}
+
+.post-row-title {
+  font-family: var(--font-display);
+  font-size: var(--text-subheading);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: var(--track-subheading);
+  transition: transform 0.3s var(--ease-glide-rev);
+}
+
+.post-row-arrow {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  color: var(--color-gray);
+  transition: transform 0.3s var(--ease-glide-rev), color var(--duration-hover) ease;
+}
+
+.post-row-excerpt {
+  grid-column: 2;
+  color: var(--color-gray);
+  font-size: var(--text-body-sm);
+  letter-spacing: var(--track-small);
+}
+
+.post-row:hover { background: var(--color-tint-hover); }
+
+.post-row:hover .post-row-arrow {
+  transform: translateX(0.5rem);
+  color: var(--color-ink);
+  transition-timing-function: var(--ease-glide);
+}
+
+.post-row:hover .post-row-title {
+  transform: translateX(0.25rem);
+  transition-timing-function: var(--ease-glide);
+}
+
+.post-row:active {
+  background: var(--color-tint-press);
+  transform: scale(0.995);
+}
+
+/* ---------- Blog: post body ---------- */
+
+/* Rhythm is set once here rather than per element: every block gets the same
+   gap, and only the headings buy more space above them. */
+.post-body > * + * { margin-top: var(--space-6); }
+
+.post-body h2 { margin-top: var(--space-16); }
+.post-body h3 { margin-top: var(--space-12); }
+.post-body h4 { margin-top: var(--space-8); }
+.post-body h2 + p, .post-body h3 + p, .post-body h4 + p { margin-top: var(--space-4); }
+
+/* h3 steps up to display type inside a post: next to a 32px h2, the global
+   17px body h3 reads as a paragraph rather than a heading. */
+.post-body h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-subheading);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: var(--track-subheading);
+}
+
+.post-body h4 {
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.post-body ul, .post-body ol { padding-left: var(--space-6); }
+.post-body ul { list-style: disc; }
+.post-body ol { list-style: decimal; }
+.post-body li + li { margin-top: var(--space-2); }
+.post-body li::marker { color: var(--color-gray); }
+
+/* Pull quote, not a decorated paragraph: one hairline and the display face. */
+.post-body blockquote {
+  border-left: 1px solid var(--color-mist);
+  padding-left: var(--space-6);
+}
+
+.post-body blockquote p {
+  font-family: var(--font-display);
+  font-size: var(--text-subheading);
+  font-weight: 300;
+  line-height: 1.4;
+  letter-spacing: var(--track-subheading);
+}
+
+/* Code is never highlighted — a highlighter ships a palette this system
+   doesn't have. The tint is the same one hovers use, so it stays theme-aware
+   and never becomes a filled #e6e6e6 panel. */
+.post-body code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--color-tint-hover);
+  /* Tight horizontal padding on purpose: any more and the tint reads as a gap
+     before the following punctuation. */
+  padding: 0.1em 0.2em;
+}
+
+.post-body pre {
+  border: 1px solid var(--color-mist);
+  background: var(--color-tint-hover);
+  padding: var(--space-6);
+  overflow-x: auto;
+}
+
+.post-body pre code {
+  background: none;
+  padding: 0;
+  font-size: var(--text-body-sm);
+  line-height: 1.6;
+}
+
+.post-table { overflow-x: auto; }
+
+.post-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-body-sm);
+}
+
+.post-body th, .post-body td {
+  text-align: left;
+  padding: var(--space-3) var(--space-4) var(--space-3) 0;
+  border-bottom: 1px solid var(--color-mist);
+  vertical-align: top;
+}
+
+.post-body th {
+  font-family: var(--font-body);
+  font-size: var(--text-kicker);
+  font-weight: 400;
+  letter-spacing: var(--track-kicker);
+  text-transform: uppercase;
+  color: var(--color-gray);
+}
+
+.post-body img { display: block; width: 100%; height: auto; }
+
+.post-body hr {
+  border: 0;
+  border-top: 1px solid var(--color-mist);
+  margin-top: var(--space-12);
+  margin-bottom: var(--space-12);
+}
+
+.post-embed { position: relative; aspect-ratio: 16 / 9; }
+.post-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+.post-back {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-body-sm);
+  letter-spacing: var(--track-small);
+  color: var(--color-gray);
+  text-decoration: none;
+  transition: color var(--duration-hover) ease;
+}
+
+.post-back:hover { color: var(--color-ink); }
+
+.post-back-arrow { transition: transform 0.3s var(--ease-glide-rev); }
+
+.post-back:hover .post-back-arrow {
+  transform: translateX(-0.35rem);
+  transition-timing-function: var(--ease-glide);
+}
+
 /* ---------- Tag pills ---------- */
 
 .tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-6); }
@@ -1104,6 +1308,12 @@ main h3 a { font-weight: 400; }
   .specimen-grid { grid-template-columns: 1fr; }
   .specimen { padding: var(--space-8) var(--space-6); }
   .link-row { grid-template-columns: 2.5rem minmax(0, 1fr) auto; }
+  /* The date column can't hold its own beside a wrapping title, so it becomes
+     the line above it. */
+  .post-row { grid-template-columns: minmax(0, 1fr) auto; }
+  .post-row-date { grid-column: 1 / -1; }
+  .post-row-excerpt { grid-column: 1; }
+  .post-body pre { padding: var(--space-4); }
   .mv-doc { padding-top: var(--space-12); }
 }
 
@@ -1159,7 +1369,9 @@ main h3 a { font-weight: 400; }
   .site-header.is-floating .site-nav a { color: var(--color-ink); }
   .site-header.is-floating .theme-toggle { color: var(--color-ink); border-color: var(--color-ink); }
   .kicker, .muted, .link-row .note, .def-row p, .dir-row p,
-  .specimen p, .tool-line, .footer-links a, .link-row .idx { color: var(--color-ink); }
+  .specimen p, .tool-line, .footer-links a, .link-row .idx,
+  .post-row-date, .post-row-excerpt, .post-back, .post-body th,
+  .post-body li::marker { color: var(--color-ink); }
   .sky .telemetry {
     background: rgba(0, 0, 0, 0.85);
     backdrop-filter: none;
