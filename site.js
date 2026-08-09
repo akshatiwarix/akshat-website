@@ -680,6 +680,11 @@
         io.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.15 });
+  // Measured from the element's leading edge, not its area: a threshold of
+  // 0.15 asks for 15% of the element to be on screen, which a post body taller
+  // than about six viewports can never satisfy — it would stay at opacity 0
+  // forever. The negative bottom margin fires the reveal once the top has come
+  // 12% of a viewport past the fold, whatever the element's height.
+  }, { threshold: 0, rootMargin: '0px 0px -12% 0px' });
   els.forEach(function (el) { io.observe(el); });
 })();
