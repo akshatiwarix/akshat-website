@@ -722,6 +722,13 @@ main h3 a { font-weight: 400; }
 
 .js [data-reveal].in { opacity: 1; transform: none; }
 
+/* A post body is as tall as the post. Rotating a 9,000px box 3deg in
+   perspective projects its bounding rect thousands of pixels down the page —
+   past the viewport, so the observer never sees it intersect and it never
+   reveals: the hidden state prevents its own exit. Long-form copy rises and
+   fades, it doesn't tilt. */
+.js [data-reveal].post-body { transform: translateY(20px); }
+
 /* Rows arrive in the order they'll be read, so the in-between frames point at
    the outcome instead of everything landing on the same frame. */
 .js [data-reveal] .link-row,
