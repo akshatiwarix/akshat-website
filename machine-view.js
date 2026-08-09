@@ -36,8 +36,15 @@
   //
   // The big link rows are read down to their parts rather than taken whole: the
   // row is one element holding a heading and a description, and reading the
-  // element would run them into "Work The systems I build".
-  var CONTENT = 'h1, h2, h3, p, li, .channel, .link-row .title, .link-row .note';
+  // element would run them into "Work The systems I build". Blog rows are the
+  // same shape and are read the same way.
+  //
+  // A post adds h4s, code blocks and table cells to the vocabulary. A code
+  // block is content here — it is text the page says — and its own whitespace
+  // collapses like any other run.
+  var CONTENT = 'h1, h2, h3, h4, p, li, pre, th, td, .channel, ' +
+                '.link-row .title, .link-row .note, ' +
+                '.post-row-date, .post-row-title, .post-row-excerpt';
 
   // The clocks are an instrument, not writing: a crawler fetching the HTML gets
   // a placeholder, and the zone labels around them only describe the widget.

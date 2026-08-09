@@ -35,12 +35,14 @@
   <meta name="twitter:description" content="I build the systems that find and qualify buyers — sourcing, enrichment, account scoring, and the evaluation loops that keep the output honest.">
   <meta name="twitter:image" content="https://www.akshatiwari.com/assets/og-card.jpg">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23000000'/><text x='50' y='72' font-size='64' font-family='sans-serif' fill='%23ffffff' text-anchor='middle'>A</text></svg>">
+  <link rel="alternate" type="application/rss+xml" title="Akshat Tiwari — Blog" href="https://www.akshatiwari.com/blog/feed.xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
   <script src="/machine-view.js" defer></script>
   <script src="/site.js" defer></script>
+  <script src="/_vercel/insights/script.js" defer></script>
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -68,6 +70,7 @@
       <nav class="site-nav" aria-label="Site">
         <a href="/" aria-current="page">Home</a>
         <a href="/work/">Work</a>
+        <a href="/blog/">Blog</a>
         <a href="/beyond-work/">Beyond Work</a>
         <a href="/contact/">Contact</a>
       </nav>
@@ -116,6 +119,10 @@
   </section>
 
   <div class="sheet">
+  <!-- The latest-posts block is written by build.js from posts/. With nothing
+       published the markers hold nothing and this page is unchanged. Everything
+       outside them stays hand-written. -->
+  <!-- BLOG:LATEST:START --><!-- BLOG:LATEST:END -->
   <section class="section container" data-reveal>
     <div class="section-head">
       <p class="kicker">Around the site</p>
@@ -127,14 +134,20 @@
         <span class="arrow" aria-hidden="true">&rarr;</span>
         <span class="note">The systems I build, where I worked before this, and how to get my resume.</span>
       </a>
-      <a class="link-row" href="/beyond-work/">
+      <a class="link-row" href="/blog/">
         <span class="idx" aria-hidden="true">03</span>
+        <span class="title">Blog</span>
+        <span class="arrow" aria-hidden="true">&rarr;</span>
+        <span class="note">Notes on the work, the things I build on the side, and what I&rsquo;m figuring out.</span>
+      </a>
+      <a class="link-row" href="/beyond-work/">
+        <span class="idx" aria-hidden="true">04</span>
         <span class="title">Beyond Work</span>
         <span class="arrow" aria-hidden="true">&rarr;</span>
         <span class="note">The personal side.</span>
       </a>
       <a class="link-row" href="/contact/">
-        <span class="idx" aria-hidden="true">04</span>
+        <span class="idx" aria-hidden="true">05</span>
         <span class="title">Contact</span>
         <span class="arrow" aria-hidden="true">&rarr;</span>
         <span class="note">Every way to reach me, including a calendar.</span>
