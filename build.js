@@ -377,7 +377,8 @@ function head(opts) {
   <link rel="stylesheet" href="/styles.css">
   <script src="/machine-view.js" defer></script>
   <script src="/site.js" defer></script>
-  <script src="/_vercel/insights/script.js" defer></script>${opts.jsonLd ? `
+  <script src="/_vercel/insights/script.js" defer></script>
+  <script src="/_vercel/speed-insights/script.js" defer></script>${opts.jsonLd ? `
   <script type="application/ld+json">
 ${opts.jsonLd}
   </script>` : ''}
