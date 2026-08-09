@@ -91,9 +91,11 @@ Deleting a post's `.md` file, or setting `draft: true`, removes its folder from
 the committed HTML. If `build.js` breaks, the live site doesn't notice. The cost
 is that a post isn't live until you've run the build and committed its output.
 
-**Analytics.** Every page loads `/_vercel/insights/script.js`. It 404s locally —
-that's expected. It needs Web Analytics switched on once in the Vercel dashboard
-under the project's Analytics tab.
+**Analytics.** Every page loads `/_vercel/insights/script.js` (Web Analytics —
+who visits, which pages) and `/_vercel/speed-insights/script.js` (Speed Insights
+— real-visitor Core Web Vitals). Both 404 locally; that's expected. Each needs
+switching on once in the Vercel dashboard, and neither needs an npm package —
+the dashboard's install steps are for React projects.
 
 **Preview before you publish.** `python3 -m http.server 8899` from the repo root,
 then open `http://localhost:8899/blog/`. Opening the HTML file directly also works,
