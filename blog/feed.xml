@@ -5,8 +5,15 @@
     <link>https://www.akshatiwari.com/blog/</link>
     <description>Writing by Akshat Tiwari, GTM Engineer — the work, the things he builds on the side, and what he is figuring out along the way.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 10 Aug 2026 12:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 13 Aug 2026 12:00:00 +0000</lastBuildDate>
     <atom:link href="https://www.akshatiwari.com/blog/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>What Working at an AI Agent Insurance Startup Has Taught Me</title>
+      <link>https://www.akshatiwari.com/blog/working-at-an-ai-agent-insurance-startup/</link>
+      <guid isPermaLink="true">https://www.akshatiwari.com/blog/working-at-an-ai-agent-insurance-startup/</guid>
+      <pubDate>Thu, 13 Aug 2026 12:00:00 +0000</pubDate>
+      <description>Most of the AI conversation is about capability. Working on liability insurance for AI agents made me start thinking about consequences instead.</description>
+    </item>
     <item>
       <title>What Does a GTM Engineer Actually Do? My Mental Model After Trying to Become One</title>
       <link>https://www.akshatiwari.com/blog/what-does-a-gtm-engineer-actually-do/</link>
