@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Theme is resolved in the same blocking script that sets .js, before first
+       paint, so a dark-mode reader never sees a frame of white. -->
+  <script>
+  (function () {
+    var root = document.documentElement;
+    root.className += ' js';
+    var stored = null;
+    try { stored = localStorage.getItem('theme'); } catch (e) {}
+    root.setAttribute('data-theme', stored === 'dark' || stored === 'light' ? stored :
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+    var view = null;
+    try { view = localStorage.getItem('view'); } catch (e) {}
+    root.setAttribute('data-view', view === 'machine' ? 'machine' : 'default');
+  })();
+  </script>
+  <title>What Working at an AI Agent Insurance Startup Has Taught Me — Akshat Tiwari</title>
+  <meta name="description" content="Most of the AI conversation is about capability. Working on liability insurance for AI agents made me start thinking about consequences instead.">
+  <link rel="canonical" href="https://www.akshatiwari.com/blog/working-at-an-ai-agent-insurance-startup/">
+  <meta property="og:title" content="What Working at an AI Agent Insurance Startup Has Taught Me">
+  <meta property="og:description" content="Most of the AI conversation is about capability. Working on liability insurance for AI agents made me start thinking about consequences instead.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.akshatiwari.com/blog/working-at-an-ai-agent-insurance-startup/">
+  <meta property="og:image" content="https://www.akshatiwari.com/assets/og-card.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="What Working at an AI Agent Insurance Startup Has Taught Me">
+  <meta name="twitter:description" content="Most of the AI conversation is about capability. Working on liability insurance for AI agents made me start thinking about consequences instead.">
+  <meta name="twitter:image" content="https://www.akshatiwari.com/assets/og-card.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23000000'/><text x='50' y='72' font-size='64' font-family='sans-serif' fill='%23ffffff' text-anchor='middle'>A</text></svg>">
+  <link rel="alternate" type="application/rss+xml" title="Akshat Tiwari — Blog" href="https://www.akshatiwari.com/blog/feed.xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/machine-view.js" defer></script>
+  <script src="/site.js" defer></script>
+  <script src="/_vercel/insights/script.js" defer></script>
+  <script src="/_vercel/speed-insights/script.js" defer></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "What Working at an AI Agent Insurance Startup Has Taught Me",
+    "description": "Most of the AI conversation is about capability. Working on liability insurance for AI agents made me start thinking about consequences instead.",
+    "datePublished": "2026-08-13",
+    "dateModified": "2026-08-13",
+    "author": {
+      "@type": "Person",
+      "name": "Akshat Tiwari",
+      "url": "https://www.akshatiwari.com/"
+    },
+    "publisher": {
+      "@type": "Person",
+      "name": "Akshat Tiwari",
+      "url": "https://www.akshatiwari.com/"
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://www.akshatiwari.com/blog/working-at-an-ai-agent-insurance-startup/"
+    },
+    "image": "https://www.akshatiwari.com/assets/og-card.jpg"
+  }
+  </script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="wordmark" href="/">Akshat Tiwari</a>
+    <div class="header-right">
+      <nav class="site-nav" aria-label="Site">
+        <a href="/">Home</a>
+        <a href="/work/">Work</a>
+        <a href="/blog/" aria-current="page">Blog</a>
+        <a href="/beyond-work/">Beyond Work</a>
+        <a href="/contact/">Contact</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle
+              aria-pressed="false" aria-label="Switch to dark mode" title="Switch to dark mode">
+        <span class="theme-icon theme-icon-moon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.2 14.6A8.6 8.6 0 0 1 9.4 3.8 8.6 8.6 0 1 0 20.2 14.6Z"/></svg>
+        </span>
+        <span class="theme-icon theme-icon-sun" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.4"/><path d="M12 2.4v2.1M12 19.5v2.1M2.4 12h2.1M19.5 12h2.1M5.2 5.2l1.5 1.5M17.3 17.3l1.5 1.5M18.8 5.2l-1.5 1.5M6.7 17.3l-1.5 1.5"/></svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="page-head container reveal sky">
+    <div class="prose">
+      <p class="kicker"><time datetime="2026-08-13">13 August 2026</time></p>
+      <h1 class="page-title">What Working at an AI Agent Insurance Startup Has Taught Me</h1>
+    </div>
+  </section>
+
+  <div class="sheet">
+  <article class="section container prose post-body" data-reveal>
+<p>A few months ago, if you had asked me what came to mind when I heard the words <strong>AI agent</strong>, I probably would have talked about automation.</p>
+<p>Agents that can research prospects.</p>
+<p>Agents that can write code.</p>
+<p>Agents that can qualify leads, answer support tickets, update CRMs, browse the internet, make decisions, and execute workflows without someone manually telling them what to do at every step.</p>
+<p>Basically, I was thinking about <strong>capability</strong>.</p>
+<p>Then I started working at a startup building liability insurance for AI agents.</p>
+<p>And suddenly I started thinking about a very different question:</p>
+<p><strong>What happens when the agent is wrong?</strong></p>
+<p>Not wrong in a benchmark.</p>
+<p>Not wrong in a ChatGPT-answer-is-a-little-weird kind of way.</p>
+<p>Wrong after it has actually <em>done something</em>.</p>
+<p>That distinction has changed the way I think about AI quite a bit.</p>
+<h2>AI gets more interesting when it can take actions</h2>
+<p>For most of the last few years, the way people interacted with AI was relatively simple.</p>
+<p>You gave a model some input.</p>
+<p>It gave you some output.</p>
+<p>You could accept it, reject it, edit it, or ignore it.</p>
+<p>The human was still sitting between the AI and most real-world consequences.</p>
+<p>Agents start to change that.</p>
+<p>An agent can potentially decide which customer to contact, send the message, change something in a database, interact with another piece of software, trigger a workflow, or perform an action on behalf of a company.</p>
+<p>That is obviously what makes agents powerful.</p>
+<p>But it is also what makes them risky.</p>
+<p>There is a pretty big difference between:</p>
+<blockquote><p>“AI suggested the wrong action.”</p></blockquote>
+<p>and</p>
+<blockquote><p>“AI took the wrong action.”</p></blockquote>
+<p>Once you start thinking about that difference, a whole category of questions appears.</p>
+<p>What happens if an agent sends information to the wrong person?</p>
+<p>What happens if it makes a decision based on incorrect data?</p>
+<p>What happens if an automated action causes financial loss?</p>
+<p>Who is responsible?</p>
+<p>The company using the agent?</p>
+<p>The company that built it?</p>
+<p>The underlying model provider?</p>
+<p>Some combination of them?</p>
+<p>I used to mostly look at AI systems through the lens of what they could automate.</p>
+<p>Working around AI insurance has made me look at them through another lens:</p>
+<p><strong>What new liability exists because this thing can now act?</strong></p>
+<h2>Reliability is not the same thing as responsibility</h2>
+<p>One thing that has become much clearer to me is that making an AI system more reliable does not eliminate the question of responsibility.</p>
+<p>You can add evaluations.</p>
+<p>Guardrails.</p>
+<p>Human-in-the-loop approvals.</p>
+<p>Observability.</p>
+<p>Permission systems.</p>
+<p>Better models.</p>
+<p>More testing.</p>
+<p>All of those things matter.</p>
+<p>But no system becomes perfect.</p>
+<p>And at some point, if AI agents are doing meaningful work inside real companies, some of them are going to fail in ways that have actual consequences.</p>
+<p>This seems obvious when you say it out loud.</p>
+<p>But most of the AI conversation I see is still disproportionately focused on making agents more capable and more reliable.</p>
+<p>There is another layer that becomes important after that:</p>
+<p><strong>What happens when reliability fails?</strong></p>
+<p>Traditional software has had decades to build systems around this problem.</p>
+<p>Contracts.</p>
+<p>Security standards.</p>
+<p>Compliance.</p>
+<p>Liability.</p>
+<p>Insurance.</p>
+<p>Enterprise procurement.</p>
+<p>AI agents are now beginning to collide with that entire world.</p>
+<p>That collision is fascinating.</p>
+<h2>The boring questions are sometimes the important ones</h2>
+<p>There is something slightly funny about working in a category like AI insurance.</p>
+<p>The AI ecosystem loves questions like:</p>
+<blockquote><p>How autonomous can agents become?</p></blockquote>
+<p>Insurance makes you ask questions like:</p>
+<blockquote><p>Who pays when one breaks something?</p></blockquote>
+<p>The second question is considerably less exciting.</p>
+<p>It might also become extremely important.</p>
+<p>The technology can move incredibly fast.</p>
+<p>The organisations adopting it usually cannot.</p>
+<p>And if you are selling into businesses, that gap matters.</p>
+<p>A founder might look at an AI agent and think:</p>
+<p><strong>This can save us hundreds of hours.</strong></p>
+<p>Someone responsible for risk might look at exactly the same agent and think:</p>
+<p><strong>What access does this have, what can it do, and what happens if it makes a mistake?</strong></p>
+<p>Neither person is necessarily wrong.</p>
+<p>They are just evaluating the same technology through completely different incentives.</p>
+<p>Understanding those incentives has probably taught me as much about GTM as it has about AI.</p>
+<h2>GTM gets harder when the category barely exists</h2>
+<p>Another interesting part of working here is that you cannot always rely on an existing playbook.</p>
+<p>If you sell CRM software, people generally understand what a CRM is.</p>
+<p>If you sell payroll software, the buyer already understands the problem category.</p>
+<p>With something like insurance for AI agents, a lot of the GTM work happens one layer earlier.</p>
+<p>Before convincing someone that your solution is good, you sometimes have to understand whether they even think the problem exists yet.</p>
+<p>That changes how I think about selling.</p>
+<p>The question is not immediately:</p>
+<p><strong>Who needs AI agent insurance?</strong></p>
+<p>It is more like:</p>
+<p><strong>Who is already deploying agents with enough autonomy that risk has become a real operational concern?</strong></p>
+<p>That leads to better questions.</p>
+<p>What actions can their agents perform?</p>
+<p>What systems can they access?</p>
+<p>How much human approval exists?</p>
+<p>What could actually go wrong?</p>
+<p>What would the financial consequence be?</p>
+<p>Has a customer or enterprise buyer already started asking them about liability?</p>
+<p>Suddenly prospecting becomes less about finding companies with the right job title and more about detecting <strong>signals of a problem becoming real</strong>.</p>
+<p>I think this is one of the most interesting parts of GTM engineering.</p>
+<p>You are trying to translate a vague market thesis into something observable.</p>
+<p>Strategy says:</p>
+<blockquote><p>Companies deploying autonomous AI will eventually need ways to transfer some of that risk.</p></blockquote>
+<p>The GTM engineering question becomes:</p>
+<blockquote><p>Cool. What data would tell us that a particular company is getting close to that moment?</p></blockquote>
+<p>That is a much more interesting problem.</p>
+<h2>The best ICP might be defined by behaviour, not industry</h2>
+<p>This has also changed how I think about ICPs.</p>
+<p>It is very tempting to define an ICP using firmographics:</p>
+<p>Company size.</p>
+<p>Industry.</p>
+<p>Funding.</p>
+<p>Geography.</p>
+<p>Employee count.</p>
+<p>Those things matter.</p>
+<p>But for emerging categories, I am increasingly convinced that <strong>behavioural signals can be much more useful</strong>.</p>
+<p>Two companies can look almost identical in a database.</p>
+<p>One is experimenting with an internal chatbot.</p>
+<p>The other has agents interacting with customers and taking actions inside production systems.</p>
+<p>From a traditional firmographic perspective, they might be the same prospect.</p>
+<p>From a risk perspective, they are completely different.</p>
+<p>So the more interesting ICP attributes become things like:</p>
+<ul><li>Is the company actually deploying agents?</li><li>Are those agents customer-facing?</li><li>Can they take actions autonomously?</li><li>Do they interact with sensitive data?</li><li>Are they being sold into enterprises?</li><li>Are customers asking questions about security, risk, or liability?</li><li>Is the company moving from experimentation to production?</li></ul>
+<p>This is something I am still learning, but it has made me much more sceptical of ICPs that are basically just a collection of filters inside a sales database.</p>
+<p>Sometimes the strongest qualification signal is simply:</p>
+<p><strong>What is this company actually doing?</strong></p>
+<h2>Every layer of the AI stack creates another layer of trust</h2>
+<p>There is another mental model I have started developing.</p>
+<p>AI adoption is not just a capability problem.</p>
+<p>It is also a trust problem.</p>
+<p>A company might believe an AI agent can perform a task.</p>
+<p>That does not automatically mean they are comfortable letting it perform that task autonomously.</p>
+<p>The larger the consequence of failure, the higher the amount of trust required.</p>
+<p>And trust seems to get built in layers.</p>
+<p>Better models create confidence in capability.</p>
+<p>Evaluations create confidence in performance.</p>
+<p>Observability creates confidence that you can understand what the agent is doing.</p>
+<p>Guardrails create confidence that you can limit what it can do.</p>
+<p>Security creates confidence around access and data.</p>
+<p>Insurance potentially creates confidence around the remaining financial risk.</p>
+<p>None of these replace each other.</p>
+<p>They stack.</p>
+<p>And I suspect that as agents become more autonomous, this entire <strong>trust infrastructure around agents</strong> could become almost as important as the agents themselves.</p>
+<p>That is probably the biggest idea I have taken away from working in this space so far.</p>
+<h2>The AI economy will need more than AI companies</h2>
+<p>There is a tendency when a new technology appears to focus entirely on the companies building the technology itself.</p>
+<p>Models.</p>
+<p>Agent frameworks.</p>
+<p>Developer tools.</p>
+<p>Infrastructure.</p>
+<p>Applications.</p>
+<p>But every major industry eventually develops another ecosystem around it.</p>
+<p>The companies that secure it.</p>
+<p>Monitor it.</p>
+<p>Audit it.</p>
+<p>Finance it.</p>
+<p>Regulate it.</p>
+<p>Insure it.</p>
+<p>Working at Ollive has made me much more interested in that second-order ecosystem.</p>
+<p>If AI agents genuinely become a new form of digital labour, there will probably be an enormous amount of infrastructure required to make companies comfortable delegating increasingly important work to them.</p>
+<p>Insurance is one tiny piece of that puzzle.</p>
+<p>But the broader category is something I find fascinating:</p>
+<p><strong>What needs to exist around AI before society is comfortable depending on it?</strong></p>
+<p>That feels like a much bigger question than whether the next generation of agents gets better benchmark scores.</p>
+<h2>My current mental model</h2>
+<p>I still think AI agents are fundamentally an automation story.</p>
+<p>But I no longer think that is the whole story.</p>
+<p>The first phase is:</p>
+<p><strong>Can AI do the work?</strong></p>
+<p>Then:</p>
+<p><strong>Can AI do the work reliably?</strong></p>
+<p>Then:</p>
+<p><strong>Can we trust AI to do the work autonomously?</strong></p>
+<p>And eventually:</p>
+<p><strong>What happens when it gets the work wrong?</strong></p>
+<p>The companies building models and agents are pushing hard on the first two questions.</p>
+<p>An entire ecosystem is now beginning to form around the last two.</p>
+<p>Working inside one small corner of that ecosystem has changed the way I look at AI.</p>
+<p>I spend a little less time thinking about demos now.</p>
+<p>And a little more time thinking about consequences.</p>
+<p>Because if agents are eventually going to do real work, make real decisions, and control real systems, then the next chapter of AI probably isn't just about making them more powerful.</p>
+<p>It is about building enough trust around them that we are actually willing to let them use that power.</p>
+  </article>
+
+  <section class="section container" data-reveal>
+    <a class="post-back" href="/blog/"><span class="post-back-arrow" aria-hidden="true">&larr;</span>All posts</a>
+  </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p class="kicker">Kanpur, India</p>
+    <div class="footer-links">
+      <a href="mailto:pi4akshat@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/akshatiwari/">LinkedIn</a>
+      <a href="https://github.com/akshatiwarix">GitHub</a>
+      <a href="https://x.com/whyakshat">X</a>
+      <a href="https://www.youtube.com/@beyondakshat">YouTube</a>
+    </div>
+  </div>
+</footer>
+
+<button class="mv-switch" type="button" role="switch" aria-checked="false" data-machine-switch
+        aria-label="Machine view: show only the text on this page"
+        title="Machine view: show only the text on this page">
+  <span class="mv-track" aria-hidden="true">
+    <span class="mv-knob">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="3.2" r="1.2"/><path d="M12 4.4v3.1"/><rect x="4" y="7.5" width="16" height="12.5" rx="3.5"/><path d="M9.2 13.2h.01M14.8 13.2h.01M9.6 16.8h4.8"/></svg>
+    </span>
+  </span>
+</button>
+
+</body>
+</html>
