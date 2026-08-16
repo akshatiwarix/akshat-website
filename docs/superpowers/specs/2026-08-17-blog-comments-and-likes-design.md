@@ -244,6 +244,7 @@ buttons, sharp corners for the inputs and every divider.
 | `UPSTASH_REDIS_REST_URL` | Vercel Marketplace integration | Endpoints return `503`; page shows the failure state |
 | `UPSTASH_REDIS_REST_TOKEN` | Vercel Marketplace integration | as above |
 | `RESEND_API_KEY` | manual | Email skipped, comment still saved |
+| `NOTIFY_EMAIL` | manual | Falls back to `pi4akshat@gmail.com`. Must match the Resend account while the sandbox sender is in use |
 | `ADMIN_TOKEN` | manual, random string | Author badge and delete unavailable |
 | `IP_SALT` | manual, random string | Falls back to a constant; rate limiting still works |
 

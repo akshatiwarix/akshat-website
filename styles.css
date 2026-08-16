@@ -1513,6 +1513,145 @@ main h3 a { font-weight: 400; }
   .band::before { background: rgba(0, 0, 0, 0.72); }
 }
 
+/* ---------- Comments and likes (blog posts) ---------- */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.like {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-ink);
+  background: transparent;
+  border: 1px solid var(--color-mist);
+  border-radius: 9999px;
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+  margin-bottom: var(--space-12);
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+}
+
+.like:hover { border-color: var(--color-gray); background: var(--color-tint-hover); }
+.like.is-liked { border-color: var(--color-ink); background: var(--color-ink); color: var(--color-paper); }
+.like[disabled] { opacity: 0.5; cursor: default; }
+
+.comment-form { margin-bottom: var(--space-12); }
+.comment-form.is-replying { margin-top: var(--space-6); margin-bottom: 0; }
+
+.comment-field {
+  display: block;
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: var(--text-body-sm);
+  color: var(--color-ink);
+  background: transparent;
+  border: 1px solid var(--color-mist);
+  border-radius: 0;
+  padding: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.comment-field::placeholder { color: var(--color-gray); }
+.comment-field:focus { outline: none; border-color: var(--color-ink); }
+.comment-body { resize: vertical; min-height: 7rem; }
+
+/* The honeypot: moved off-screen rather than display:none, because a bot that
+   reads styles skips a hidden field but fills one it can find. */
+.comment-trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.comment-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-4);
+}
+
+.comment-status {
+  margin: 0 auto 0 0;
+  font-size: var(--text-body-sm);
+  color: var(--color-gray);
+}
+
+.comment-status.is-error { color: var(--color-ink); }
+
+.comment-list { list-style: none; margin: 0; padding: 0; }
+
+.comment {
+  border-top: 1px solid var(--color-mist);
+  padding-top: var(--space-6);
+  margin-top: var(--space-6);
+}
+
+.comment-meta {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+  font-size: var(--text-body-sm);
+}
+
+.comment-name { color: var(--color-ink); }
+
+.comment-badge {
+  font-size: var(--text-kicker);
+  letter-spacing: var(--track-kicker);
+  text-transform: uppercase;
+  color: var(--color-gray);
+  border: 1px solid var(--color-mist);
+  padding: 0 var(--space-2);
+}
+
+.comment-time { color: var(--color-gray); font-size: var(--text-kicker); }
+
+.comment-text { margin: 0 0 var(--space-3); white-space: pre-wrap; }
+
+.comment-tools { display: flex; gap: var(--space-4); margin: 0; }
+
+.comment-link {
+  font-family: var(--font-body);
+  font-size: var(--text-kicker);
+  letter-spacing: var(--track-kicker);
+  text-transform: uppercase;
+  color: var(--color-gray);
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.comment-link:hover { color: var(--color-ink); }
+
+.comment-replies {
+  list-style: none;
+  margin: var(--space-6) 0 0;
+  padding-left: var(--space-6);
+  border-left: 1px solid var(--color-mist);
+}
+
+.comment-replies .comment { border-top: 0; padding-top: 0; margin-top: var(--space-6); }
+.comment-replies .comment:first-child { margin-top: 0; }
+
+.comment-empty { color: var(--color-gray); padding-top: var(--space-6); }
+
 /* High contrast: near-solid surfaces with defined borders, and muted grey stops
    being grey. */
 @media (prefers-contrast: more) {
@@ -1529,6 +1668,7 @@ main h3 a { font-weight: 400; }
   .kicker, .muted, .link-row .note, .def-row p, .dir-row p,
   .specimen p, .tool-line, .footer-links a, .link-row .idx,
   .post-row-date, .post-row-excerpt, .post-back, .post-body th,
+  .comment-time, .comment-badge, .comment-link, .comment-status, .comment-empty,
   .post-body li::marker { color: var(--color-ink); }
   .sky .telemetry {
     background: rgba(0, 0, 0, 0.85);
