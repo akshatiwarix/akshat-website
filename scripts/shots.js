@@ -16,8 +16,11 @@ async function main() {
   fs.mkdirSync(OUT, { recursive: true });
 
   const browser = await chromium.launch();
+  // 1000×625 rather than a full desktop width: the tile is ~460px wide on the
+  // page, so a 1280px capture shrinks the app's own type past reading size. A
+  // narrower viewport keeps the 16:10 frame and renders the interface bigger.
   const page = await browser.newPage({
-    viewport: { width: 1280, height: 800 },
+    viewport: { width: 1000, height: 625 },
     deviceScaleFactor: 2
   });
 
