@@ -43,7 +43,7 @@ var SITE = {
   projectsDescription:
     'Deployed GTM tools by Akshat Tiwari: ICP scoring, an enrichment waterfall, record linkage, buying-committee mapping, and signal monitoring. Every one is live and clickable.',
   projectsIntro:
-    'Every one of these is deployed and clickable. Open a tile, use the thing, then read the code &mdash; no clone, no setup, no talking to me first. Most of them are days out of a 100-day building challenge.'
+    'Every one of these is deployed and clickable. Open a tile, use the thing, then read the code &mdash; no clone, no setup, no talking to me first.'
 };
 
 var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
@@ -628,19 +628,8 @@ function readProjects() {
   return projects;
 }
 
-// The chrome bar carries an address, not a URL: no scheme, no trailing slash.
-function displayHost(url) {
-  return url.replace(/^https?:\/\//, '').replace(/\/$/, '');
-}
-
 function projectTile(project) {
-  var meta = [project.status, project.day].filter(Boolean).join(' · ');
-  var tags = (project.tags || []).map(function (tag) {
-    return '              <li>' + escapeHtml(tag) + '</li>';
-  }).join('\n');
-
   return `        <article class="project-tile">
-          <p class="project-url">${escapeHtml(displayHost(project.demo))}</p>
           <div class="project-shot">
             <img src="${project.shot}" alt="${escapeHtml(project.alt)}"
                  width="1600" height="1000" loading="lazy" decoding="async">
@@ -649,10 +638,6 @@ function projectTile(project) {
             <h3 class="project-name"><a href="${project.demo}" target="_blank" rel="noopener">${escapeHtml(project.name)}</a></h3>
             <a class="project-repo" href="${project.repo}" target="_blank" rel="noopener">GitHub</a>
             <p class="project-blurb">${escapeHtml(project.blurb)}</p>
-            <ul class="project-tags">
-${tags}
-            </ul>
-            <p class="project-meta">${escapeHtml(meta)}</p>
           </div>
         </article>`;
 }

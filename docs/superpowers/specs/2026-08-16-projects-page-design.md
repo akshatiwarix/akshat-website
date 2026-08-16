@@ -62,24 +62,23 @@ page order. One entry per tile:
 ```json
 {
   "slug": "icp-score",
-  "name": "icp-score",
-  "blurb": "Explainable ICP account scoring — deterministic weighted criteria with hard disqualifiers, so every score traces back to the rule that produced it.",
-  "tags": ["TypeScript", "Deterministic"],
+  "name": "ICP Score",
+  "blurb": "Ranks companies against an ideal-customer profile and shows the arithmetic behind every score. Exclusions are hard filters, not heavy negative weights.",
   "demo": "https://icp-score.vercel.app",
   "repo": "https://github.com/akshatiwarix/icp-score",
   "shot": "/assets/projects/icp-score.webp",
-  "status": "Live",
+  "alt": "The ICP Score interface: fifty companies ranked, with one row expanded to show its score breakdown",
   "group": "gtm"
 }
 ```
 
 - `group` is `"gtm"` or `"aside"`. `"aside"` entries render below the divider.
 - `demo` is required; a tile without one does not belong on this page.
-- `blurb` is 2–3 lines of prose, drafted from the repo README and edited by
-  Akshat. It is not a copy of the tool stack line on `/work`, and it names
-  systems rather than SaaS, per `CONTEXT.md`.
-- `tags` are short, 2–3 per tile, describing the engineering (TypeScript,
-  Deterministic, No LLM), never the GTM tool stack.
+- `blurb` is up to three lines of prose, drafted from the repo README and edited
+  by Akshat. It is not a copy of the tool stack line on `/work`, and it names
+  systems rather than SaaS, per `CONTEXT.md`. Keep it under ~160 characters, or
+  the three-line clamp cuts it mid-word.
+- `alt` describes the app's interface, not the file.
 
 `build.js` reads this file, renders the tiles, and writes `/projects/index.html`
 between `PROJECTS:GRID` markers using the same shell-copy approach the blog
@@ -92,16 +91,17 @@ column below 700px.
 
 ```
 ┌──────────────────────────────┐   1px #e6e6e6, sharp corners, no shadow
-│ icp-score.vercel.app         │   chrome bar: kicker 12px, #808080, 1px bottom rule
-├──────────────────────────────┤
 │ [ shot, 16:10, grayscale(1) ]│   overflow hidden, lazy, width/height attributes
 ├──────────────────────────────┤
-│ icp-score          [GitHub]  │   Raleway 22px 400 · corner link Roboto 13px #808080
-│ Explainable ICP scoring…     │   Roboto 17px, line-clamp: 3
-│ TypeScript · Deterministic   │   pill tags, 9999px radius, 1px #e6e6e6
-│ Live · Aug 2026              │   caption 13px #808080
+│ ICP Score          [GitHub]  │   Raleway 22px 400 · corner link Roboto 13px #808080
+│ Ranks companies against an…  │   Roboto 15px, line-clamp: 3
 └──────────────────────────────┘
 ```
+
+A tile carries three things: the screenshot, the name, one line. It shipped
+first with a chrome bar holding the demo address, a row of technology pills, and
+a "Live · Day 001" status line; all three came off on 16 Aug 2026. Each was
+defensible alone and together they turned a preview into a spec sheet.
 
 The tile is an `<article>`, not an anchor. The project title is an `<a>` to the
 demo carrying a `::after` that stretches over the whole tile, which makes the
@@ -109,13 +109,9 @@ full tile clickable while keeping the GitHub corner link a separate, valid,
 keyboard-reachable anchor. Nested anchors would be invalid HTML and would break
 tab order.
 
-The chrome bar is a hairline rule with the demo hostname in kicker type. No
-traffic-light dots, no rounded window corners — it reads as a website using only
-tokens already in `DESIGN.md`.
-
 Every token here already exists: `#000000`, `#808080`, `#e6e6e6`, `#ffffff`,
 Raleway for the title, Roboto for everything else, sharp corners on the tile,
-pill radius on the tags, no shadows anywhere.
+no shadows anywhere.
 
 ## 6. Motion
 
@@ -135,6 +131,13 @@ motion.
 
 The demos use a slate palette, so the resting grayscale state is a small step
 from their real appearance and the hover restores rather than floods.
+
+In dark mode the resting shot is also dimmed to 78% brightness, since most of
+these apps are light-themed and would otherwise burn a white hole in a black
+page. The dim rides a `--shot-dim` custom property rather than its own `filter`
+declaration: a separate dark-mode rule has the same specificity as the hover
+rule and sits later in the file, so it would win and the colour would never come
+back on hover.
 
 ## 7. Shot pipeline
 
@@ -160,9 +163,8 @@ for load performance and resilience.
 
 ## 8. Machine view, SEO, accessibility
 
-- Machine view strips presentation and shows text. Tile titles, blurbs and tags
-  are real text in the DOM, so they survive it. The chrome bar hostname is a
-  text node too and reads sensibly in the stripped view.
+- Machine view strips presentation and shows text. Tile titles and blurbs are
+  real text in the DOM, so they survive it.
 - Every shot gets an `alt` describing the app, not the file
   ("The icp-score scoring interface").
 - Images carry explicit `width` and `height` so the grid does not shift as they
