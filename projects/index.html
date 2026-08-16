@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Theme is resolved in the same blocking script that sets .js, before first
+       paint, so a dark-mode reader never sees a frame of white. -->
+  <script>
+  (function () {
+    var root = document.documentElement;
+    root.className += ' js';
+    var stored = null;
+    try { stored = localStorage.getItem('theme'); } catch (e) {}
+    root.setAttribute('data-theme', stored === 'dark' || stored === 'light' ? stored :
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+    var view = null;
+    try { view = localStorage.getItem('view'); } catch (e) {}
+    root.setAttribute('data-view', view === 'machine' ? 'machine' : 'default');
+  })();
+  </script>
+  <title>Projects — Akshat Tiwari, GTM Engineer</title>
+  <meta name="description" content="Deployed GTM tools by Akshat Tiwari: ICP scoring, an enrichment waterfall, record linkage, buying-committee mapping, and signal monitoring. Every one is live and clickable.">
+  <link rel="canonical" href="https://www.akshatiwari.com/projects/">
+  <meta property="og:title" content="Projects — Akshat Tiwari, GTM Engineer">
+  <meta property="og:description" content="Deployed GTM tools by Akshat Tiwari: ICP scoring, an enrichment waterfall, record linkage, buying-committee mapping, and signal monitoring. Every one is live and clickable.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.akshatiwari.com/projects/">
+  <meta property="og:image" content="https://www.akshatiwari.com/assets/og-card.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Projects — Akshat Tiwari, GTM Engineer">
+  <meta name="twitter:description" content="Deployed GTM tools by Akshat Tiwari: ICP scoring, an enrichment waterfall, record linkage, buying-committee mapping, and signal monitoring. Every one is live and clickable.">
+  <meta name="twitter:image" content="https://www.akshatiwari.com/assets/og-card.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23000000'/><text x='50' y='72' font-size='64' font-family='sans-serif' fill='%23ffffff' text-anchor='middle'>A</text></svg>">
+  <link rel="alternate" type="application/rss+xml" title="Akshat Tiwari — Blog" href="https://www.akshatiwari.com/blog/feed.xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/machine-view.js" defer></script>
+  <script src="/site.js" defer></script>
+  <script src="/_vercel/insights/script.js" defer></script>
+  <script src="/_vercel/speed-insights/script.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="wordmark" href="/">Akshat Tiwari</a>
+    <div class="header-right">
+      <nav class="site-nav" aria-label="Site">
+        <a href="/">Home</a>
+        <a href="/work/">Work</a>
+        <a href="/projects/" aria-current="page">Projects</a>
+        <a href="/blog/">Blog</a>
+        <a href="/beyond-work/">Beyond Work</a>
+        <a href="/contact/">Contact</a>
+      </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle
+              aria-pressed="false" aria-label="Switch to dark mode" title="Switch to dark mode">
+        <span class="theme-icon theme-icon-moon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.2 14.6A8.6 8.6 0 0 1 9.4 3.8 8.6 8.6 0 1 0 20.2 14.6Z"/></svg>
+        </span>
+        <span class="theme-icon theme-icon-sun" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="4.4"/><path d="M12 2.4v2.1M12 19.5v2.1M2.4 12h2.1M19.5 12h2.1M5.2 5.2l1.5 1.5M17.3 17.3l1.5 1.5M18.8 5.2l-1.5 1.5M6.7 17.3l-1.5 1.5"/></svg>
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="page-head container reveal sky">
+    <div class="prose">
+      <h1 class="page-title">Projects</h1>
+      <p>Every one of these is deployed and clickable. Open a tile, use the thing, then read the code &mdash; no clone, no setup, no talking to me first. Most of them are days out of a 100-day building challenge.</p>
+    </div>
+  </section>
+
+  <div class="sheet">
+  <section class="section container" data-reveal>
+    <div class="section-head">
+      <p class="kicker">Shipped</p>
+      <h2>GTM systems</h2>
+    </div>
+      <div class="project-grid">
+        <article class="project-tile">
+          <p class="project-url">icp-score.vercel.app</p>
+          <div class="project-shot">
+            <img src="/assets/projects/icp-score.webp" alt="The ICP Score interface: fifty companies ranked, with one row expanded to show its score breakdown"
+                 width="1600" height="1000" loading="lazy" decoding="async">
+          </div>
+          <div class="project-body">
+            <h3 class="project-name"><a href="https://icp-score.vercel.app" target="_blank" rel="noopener">ICP Score</a></h3>
+            <a class="project-repo" href="https://github.com/akshatiwarix/icp-score" target="_blank" rel="noopener">GitHub</a>
+            <p class="project-blurb">Ranks companies against an ideal-customer profile and shows the arithmetic behind every score. Exclusions are hard filters rather than heavy negative weights, and a missing field says so instead of quietly scoring as a miss.</p>
+            <ul class="project-tags">
+              <li>TypeScript</li>
+              <li>Deterministic</li>
+              <li>No LLM</li>
+            </ul>
+            <p class="project-meta">Live · Day 001</p>
+          </div>
+        </article>
+        <article class="project-tile">
+          <p class="project-url">enrichment-waterfall.vercel.app</p>
+          <div class="project-shot">
+            <img src="/assets/projects/enrichment-waterfall.webp" alt="The Enrichment Waterfall interface: a run in progress showing each provider stage and its per-attempt cost"
+                 width="1600" height="1000" loading="lazy" decoding="async">
+          </div>
+          <div class="project-body">
+            <h3 class="project-name"><a href="https://enrichment-waterfall.vercel.app" target="_blank" rel="noopener">Enrichment Waterfall</a></h3>
+            <a class="project-repo" href="https://github.com/akshatiwarix/enrichment-waterfall" target="_blank" rel="noopener">GitHub</a>
+            <p class="project-blurb">Finds a work email by trying providers in cost order and stopping at the first address that survives verification. Every attempt is recorded: what it returned, why it was kept or thrown out, and what it cost.</p>
+            <ul class="project-tags">
+              <li>TypeScript</li>
+              <li>Deterministic</li>
+              <li>No LLM</li>
+            </ul>
+            <p class="project-meta">Live · Day 002</p>
+          </div>
+        </article>
+        <article class="project-tile">
+          <p class="project-url">signal-scout-weld.vercel.app</p>
+          <div class="project-shot">
+            <img src="/assets/projects/signal-scout.webp" alt="The Signal Scout interface: a daily priority board of accounts ranked by decayed signal strength"
+                 width="1600" height="1000" loading="lazy" decoding="async">
+          </div>
+          <div class="project-body">
+            <h3 class="project-name"><a href="https://signal-scout-weld.vercel.app" target="_blank" rel="noopener">Signal Scout</a></h3>
+            <a class="project-repo" href="https://github.com/akshatiwarix/signal-scout" target="_blank" rel="noopener">GitHub</a>
+            <p class="project-blurb">Derives account events by diffing dated observations of the same company, then ages them and ranks accounts by how timely outreach is right now. A feed answers what happened; this answers who to touch today.</p>
+            <ul class="project-tags">
+              <li>TypeScript</li>
+              <li>Time decay</li>
+              <li>No LLM</li>
+            </ul>
+            <p class="project-meta">Live · Day 005</p>
+          </div>
+        </article>
+        <article class="project-tile">
+          <p class="project-url">lead-cleaner-smoky.vercel.app</p>
+          <div class="project-shot">
+            <img src="/assets/projects/lead-cleaner.webp" alt="The Lead Cleaner review queue: candidate duplicate records with a match threshold slider"
+                 width="1600" height="1000" loading="lazy" decoding="async">
+          </div>
+          <div class="project-body">
+            <h3 class="project-name"><a href="https://lead-cleaner-smoky.vercel.app" target="_blank" rel="noopener">Lead Cleaner</a></h3>
+            <a class="project-repo" href="https://github.com/akshatiwarix/lead-cleaner" target="_blank" rel="noopener">GitHub</a>
+            <p class="project-blurb">Record linkage for messy lead and CRM data: tiered matching, constrained clustering, and a field-level receipt for every merge. The same human arriving three times under three spellings collapses into one record you can audit.</p>
+            <ul class="project-tags">
+              <li>TypeScript</li>
+              <li>Record linkage</li>
+              <li>No LLM</li>
+            </ul>
+            <p class="project-meta">Live · Day 003</p>
+          </div>
+        </article>
+        <article class="project-tile">
+          <p class="project-url">persona-mapper.vercel.app</p>
+          <div class="project-shot">
+            <img src="/assets/projects/persona-mapper.webp" alt="The Persona Mapper interface: a generated buying committee for one company and offer"
+                 width="1600" height="1000" loading="lazy" decoding="async">
+          </div>
+          <div class="project-body">
+            <h3 class="project-name"><a href="https://persona-mapper.vercel.app" target="_blank" rel="noopener">Persona Mapper</a></h3>
+            <a class="project-repo" href="https://github.com/akshatiwarix/persona-mapper" target="_blank" rel="noopener">GitHub</a>
+            <p class="project-blurb">A company and an offer go in; a buying committee comes out — titles that actually exist at that headcount, in that industry's vocabulary, with an authority ladder tied to deal size. The same offer restructures the committee completely at eight people and at eighteen thousand.</p>
+            <ul class="project-tags">
+              <li>TypeScript</li>
+              <li>Deterministic</li>
+              <li>No LLM</li>
+            </ul>
+            <p class="project-meta">Live · Day 004</p>
+          </div>
+        </article>
+        <article class="project-tile">
+          <p class="project-url">why-now.vercel.app</p>
+          <div class="project-shot">
+            <img src="/assets/projects/why-now.webp" alt="The Why Now interface: an inference chain with each step licensed by a named rule"
+                 width="1600" height="1000" loading="lazy" decoding="async">
+          </div>
+          <div class="project-body">
+            <h3 class="project-name"><a href="https://why-now.vercel.app" target="_blank" rel="noopener">Why Now</a></h3>
+            <a class="project-repo" href="https://github.com/akshatiwarix/why-now" target="_blank" rel="noopener">GitHub</a>
+            <p class="project-blurb">Turns dated company evidence into a &quot;why now&quot; hypothesis where every inferential step is licensed by a declared rule — or the chain visibly breaks at the step that failed. Built because a well-cited non-sequitur is worse than no output at all.</p>
+            <ul class="project-tags">
+              <li>TypeScript</li>
+              <li>Rule-licensed</li>
+              <li>Synthetic corpus</li>
+            </ul>
+            <p class="project-meta">Live · Day 007</p>
+          </div>
+        </article>
+      </div>
+  </section>
+
+  <section class="section container" data-reveal>
+    <div class="section-head">
+      <p class="kicker">Off the clock</p>
+      <h2>Not GTM</h2>
+    </div>
+      <div class="project-grid">
+        <article class="project-tile">
+          <p class="project-url">girth-of-nations.doorhandles.workers.dev</p>
+          <div class="project-shot">
+            <img src="/assets/projects/girth-of-nations.webp" alt="The Girth of Nations canvas: country shapes scaled by how many emoji strangers have dropped on them"
+                 width="1600" height="1000" loading="lazy" decoding="async">
+          </div>
+          <div class="project-body">
+            <h3 class="project-name"><a href="https://girth-of-nations.doorhandles.workers.dev/" target="_blank" rel="noopener">Girth of Nations</a></h3>
+            <a class="project-repo" href="https://github.com/akshatiwarix/girth-of-nations" target="_blank" rel="noopener">GitHub</a>
+            <p class="project-blurb">An infinite canvas of ~196 countries that inflate and deflate as strangers drop emoji on them. A country's size is a function of its emoji count, so the map reshapes itself live. No accounts, no posts, six emoji.</p>
+            <ul class="project-tags">
+              <li>TypeScript</li>
+              <li>Cloudflare Workers</li>
+              <li>Realtime</li>
+            </ul>
+            <p class="project-meta">Live</p>
+          </div>
+        </article>
+      </div>
+  </section>
+  </div>
+
+  <section class="band">
+    <div class="container" data-reveal>
+      <p class="kicker">Get in touch</p>
+      <h2>Want to talk about any of these?</h2>
+      <p>If you're hiring for GTM engineering, or building in GTM and want to compare notes, I'm easy to reach. Either channel works, and I read both.</p>
+      <div class="hero-actions">
+        <a class="btn" href="/contact/">Contact</a>
+        <a class="btn" href="https://github.com/akshatiwarix">GitHub</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p class="kicker">Bangalore, India</p>
+    <div class="footer-links">
+      <a href="mailto:pi4akshat@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/akshatiwari/">LinkedIn</a>
+      <a href="https://github.com/akshatiwarix">GitHub</a>
+      <a href="https://x.com/whyakshat">X</a>
+      <a href="https://www.youtube.com/@beyondakshat">YouTube</a>
+    </div>
+  </div>
+</footer>
+
+<button class="mv-switch" type="button" role="switch" aria-checked="false" data-machine-switch
+        aria-label="Machine view: show only the text on this page"
+        title="Machine view: show only the text on this page">
+  <span class="mv-track" aria-hidden="true">
+    <span class="mv-knob">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="3.2" r="1.2"/><path d="M12 4.4v3.1"/><rect x="4" y="7.5" width="16" height="12.5" rx="3.5"/><path d="M9.2 13.2h.01M14.8 13.2h.01M9.6 16.8h4.8"/></svg>
+    </span>
+  </span>
+</button>
+
+</body>
+</html>
