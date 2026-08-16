@@ -20,6 +20,9 @@
   var LIKED_KEY = 'akshat:liked:' + slug;
   var TOKEN_KEY = 'akshat:admin-token';
 
+  var nameField = form.querySelector('[name="name"]');
+  var authorName = root.getAttribute('data-author') || 'Author';
+
   var replyingTo = null;
 
   // ---------- storage, defensively ----------
@@ -50,6 +53,17 @@
 
   function token() {
     return stored(TOKEN_KEY);
+  }
+
+  // Signed in as the author, the name field is a question with one answer, so
+  // stop asking it. The name still travels with every comment — it is supplied
+  // here rather than typed.
+  function applyAuthorChrome() {
+    var isAuthor = Boolean(token());
+    nameField.hidden = isAuthor;
+    nameField.required = !isAuthor;
+    var label = form.querySelector('label[for="' + nameField.id + '"]');
+    if (label) label.hidden = isAuthor;
   }
 
   // ---------- time ----------
@@ -195,11 +209,17 @@
   form.addEventListener('submit', async function (event) {
     event.preventDefault();
 
-    var name = form.querySelector('[name="name"]').value;
+    var authoring = Boolean(token());
+    var name = authoring ? authorName : nameField.value;
     var body = form.querySelector('.comment-body').value;
     var submit = form.querySelector('.btn');
 
-    if (!name.trim() || !body.trim()) {
+    if (!body.trim()) {
+      setStatus(authoring ? 'Write something first.' : 'A name and a comment, please.', true);
+      return;
+    }
+
+    if (!authoring && !name.trim()) {
       setStatus('A name and a comment, please.', true);
       return;
     }
@@ -294,6 +314,7 @@
     }
   });
 
+  applyAuthorChrome();
   load();
   loadLikes();
 }());

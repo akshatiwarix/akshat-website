@@ -531,7 +531,7 @@ function renderPost(post) {
 ${post.html}
   </article>
 
-  <section class="section container comments" data-reveal data-slug="${post.slug}" data-title="${escapeHtml(post.title)}">
+  <section class="section container comments" data-reveal data-slug="${post.slug}" data-title="${escapeHtml(post.title)}" data-author="${escapeHtml(SITE.author)}">
     <div class="prose">
       <button class="like" type="button" data-like aria-pressed="false">
         <span class="like-mark" aria-hidden="true">&#9825;</span>
