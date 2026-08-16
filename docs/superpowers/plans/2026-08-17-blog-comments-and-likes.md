@@ -188,7 +188,7 @@ test('withoutComment removes a single reply and leaves its parent', function () 
 
 - [ ] **Step 2: Run the tests and watch them fail**
 
-Run: `node --test api/`
+Run: `node --test api/_lib.test.js`
 Expected: FAIL — `Cannot find module './_lib.js'`
 
 - [ ] **Step 3: Write `api/_lib.js`**
@@ -330,7 +330,7 @@ module.exports = {
 
 - [ ] **Step 4: Run the tests and watch them pass**
 
-Run: `node --test api/`
+Run: `node --test api/_lib.test.js`
 Expected: PASS, 14 tests, 0 failures.
 
 - [ ] **Step 5: Commit**
@@ -494,7 +494,7 @@ Expected: `ok`
 
 - [ ] **Step 4: Confirm the unit tests still pass**
 
-Run: `node --test api/`
+Run: `node --test api/_lib.test.js`
 Expected: PASS, 14 tests.
 
 - [ ] **Step 5: Commit**
@@ -715,7 +715,7 @@ Expected: `ok`
 
 - [ ] **Step 3: Confirm the unit tests still pass**
 
-Run: `node --test api/`
+Run: `node --test api/_lib.test.js`
 Expected: PASS, 14 tests.
 
 - [ ] **Step 4: Commit**
