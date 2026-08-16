@@ -5,15 +5,26 @@
 
 var lib = require('./_lib.js');
 
+// Vercel's Upstash integration injects one pair of names, its older KV
+// integration another. Both describe the same REST endpoint, so accept either
+// rather than making the dashboard's choice a deployment bug.
+function endpoint() {
+  return process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL || '';
+}
+
+function credential() {
+  return process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN || '';
+}
+
 function configured() {
-  return Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
+  return Boolean(endpoint() && credential());
 }
 
 async function command(args) {
-  var response = await fetch(process.env.UPSTASH_REDIS_REST_URL, {
+  var response = await fetch(endpoint(), {
     method: 'POST',
     headers: {
-      Authorization: 'Bearer ' + process.env.UPSTASH_REDIS_REST_TOKEN,
+      Authorization: 'Bearer ' + credential(),
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(args)
