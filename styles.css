@@ -750,7 +750,8 @@ main h3 a { font-weight: 400; }
 .js [data-reveal] .link-row,
 .js [data-reveal] .def-row,
 .js [data-reveal] .dir-row,
-.js [data-reveal] .specimen {
+.js [data-reveal] .specimen,
+.js [data-reveal] .project-tile {
   opacity: 0;
   transform: translateY(0.75rem);
   transition: opacity 0.55s var(--ease-out), transform 0.55s var(--ease-out);
@@ -759,14 +760,15 @@ main h3 a { font-weight: 400; }
 .js [data-reveal].in .link-row,
 .js [data-reveal].in .def-row,
 .js [data-reveal].in .dir-row,
-.js [data-reveal].in .specimen { opacity: 1; transform: none; }
+.js [data-reveal].in .specimen,
+.js [data-reveal].in .project-tile { opacity: 1; transform: none; }
 
-.js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen):nth-child(1) { transition-delay: 0.06s; }
-.js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen):nth-child(2) { transition-delay: 0.12s; }
-.js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen):nth-child(3) { transition-delay: 0.18s; }
-.js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen):nth-child(4) { transition-delay: 0.24s; }
-.js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen):nth-child(5) { transition-delay: 0.30s; }
-.js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen):nth-child(n + 6) { transition-delay: 0.36s; }
+.js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen, .project-tile):nth-child(1) { transition-delay: 0.06s; }
+.js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen, .project-tile):nth-child(2) { transition-delay: 0.12s; }
+.js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen, .project-tile):nth-child(3) { transition-delay: 0.18s; }
+.js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen, .project-tile):nth-child(4) { transition-delay: 0.24s; }
+.js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen, .project-tile):nth-child(5) { transition-delay: 0.30s; }
+.js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen, .project-tile):nth-child(n + 6) { transition-delay: 0.36s; }
 
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(1rem); }
@@ -1139,6 +1141,158 @@ main h3 a { font-weight: 400; }
 
 .tag:hover { border-color: var(--color-gray); }
 
+/* ---------- Projects grid ---------- */
+
+/* Each tile is a website in miniature: a hairline chrome bar carrying the
+   address, then the screenshot, then the words. Grey at rest so the page keeps
+   its monochrome discipline; hover restores the app's own colour. */
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-8);
+}
+
+.project-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-paper);
+  border: 1px solid var(--color-mist);
+  transition: border-color var(--duration-hover) ease;
+}
+
+.project-tile:hover,
+.project-tile:focus-within { border-color: var(--color-ink); }
+
+/* Lowercase and lightly tracked rather than the usual kicker treatment: a URL
+   in capitals stops reading as a URL. */
+.project-url {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-kicker);
+  letter-spacing: 0.08em;
+  color: var(--color-gray);
+  border-bottom: 1px solid var(--color-mist);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.project-shot {
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  background: var(--color-mist);
+  border-bottom: 1px solid var(--color-mist);
+}
+
+.project-shot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  filter: grayscale(1);
+  transition: filter var(--duration-material) ease,
+              transform var(--duration-material) var(--ease-out);
+}
+
+.project-tile:hover .project-shot img,
+.project-tile:focus-within .project-shot img {
+  filter: grayscale(0);
+  transform: scale(1.03);
+}
+
+/* Most of these apps have light interfaces, so on a black page a resting tile
+   would be a slab of white. Dim it at rest; hover brings it all the way up. */
+:root[data-theme="dark"] .project-shot img { filter: grayscale(1) brightness(0.78); }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .project-shot img { filter: grayscale(1) brightness(0.78); }
+}
+
+.project-body {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-6) var(--space-4) var(--space-4);
+}
+
+.project-name {
+  margin: 0;
+  /* Room for the GitHub link parked in the corner. */
+  padding-right: 4.5rem;
+  font-family: var(--font-display);
+  font-size: var(--text-subheading);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: var(--track-subheading);
+}
+
+.project-name a { color: var(--color-ink); text-decoration: none; }
+
+/* Stretched link: the whole tile opens the demo while GitHub stays a separate
+   anchor. Nesting one anchor inside another would be invalid and would cost
+   the repo link its place in the tab order. */
+.project-name a::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+
+.project-repo {
+  position: absolute;
+  top: var(--space-6);
+  right: var(--space-4);
+  z-index: 2;
+  font-size: var(--text-caption);
+  letter-spacing: var(--track-small);
+  color: var(--color-gray);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-mist);
+  transition: color var(--duration-hover) ease, border-color var(--duration-hover) ease;
+}
+
+.project-repo:hover { color: var(--color-ink); border-bottom-color: var(--color-ink); }
+
+/* Clamped so uneven blurbs can't stagger the grid. */
+.project-blurb {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.project-tags li {
+  padding: 0.125rem var(--space-3);
+  font-size: var(--text-caption);
+  letter-spacing: var(--track-small);
+  color: var(--color-gray);
+  border: 1px solid var(--color-mist);
+  border-radius: var(--radius-pill);
+}
+
+/* auto top margin pins the status line to the bottom, so tiles with shorter
+   copy still line their last row up with their neighbours. */
+.project-meta {
+  margin: auto 0 0;
+  font-size: var(--text-caption);
+  letter-spacing: var(--track-small);
+  color: var(--color-gray);
+}
+
 /* ---------- Specimen grid (Beyond Work) ---------- */
 
 .specimen-grid {
@@ -1317,9 +1471,25 @@ main h3 a { font-weight: 400; }
 @media (max-width: 45rem) {
   /* Display type needs less negative tracking once it's small */
   :root { --track-display: -0.015em; --track-heading: -0.012em; }
-  .site-nav { gap: var(--space-4); flex-wrap: wrap; }
+  /* Six nav items don't fit beside the wordmark on a phone. The controls drop
+     to their own row and the links scroll sideways within it, so the header is
+     two predictable rows instead of a stack that grows with the item count. */
+  .site-header .container { align-items: flex-start; }
+  .header-right { width: 100%; justify-content: space-between; gap: var(--space-4); }
+  .site-nav {
+    gap: var(--space-4);
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    /* The last link fades rather than ending flush, which reads as "more". */
+    -webkit-mask-image: linear-gradient(to right, #000 88%, transparent 100%);
+            mask-image: linear-gradient(to right, #000 88%, transparent 100%);
+  }
+  .site-nav::-webkit-scrollbar { display: none; }
   .site-nav a { font-size: 0.8125rem; }
-  .header-right { gap: var(--space-4); }
+  /* One column, so tiles no longer have to line up: let the copy finish. */
+  .project-blurb { -webkit-line-clamp: none; line-clamp: none; display: block; }
   .section, .page-head { padding-top: var(--space-16); padding-bottom: var(--space-16); }
   .hero { min-height: 0; padding-top: var(--space-12); }
   .telemetry { flex-direction: column; align-items: flex-start; gap: var(--space-4); margin-top: var(--space-12); }
@@ -1330,6 +1500,7 @@ main h3 a { font-weight: 400; }
   .def-row, .dir-row { grid-template-columns: 1fr; gap: var(--space-2); }
   .specimen-grid { grid-template-columns: 1fr; }
   .specimen { padding: var(--space-8) var(--space-6); }
+  .project-grid { grid-template-columns: 1fr; gap: var(--space-6); }
   .link-row { grid-template-columns: 2.5rem minmax(0, 1fr) auto; }
   /* The date column can't hold its own beside a wrapping title, so it becomes
      the line above it. */
@@ -1354,8 +1525,12 @@ main h3 a { font-weight: 400; }
   }
   .reveal { animation: fade-in 0.2s ease-out both; }
   .js [data-reveal],
-  .js [data-reveal] :is(.link-row, .def-row, .dir-row, .specimen) { transform: none; }
-  .js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen) { transition-delay: 0s; }
+  .js [data-reveal] :is(.link-row, .def-row, .dir-row, .specimen, .project-tile) { transform: none; }
+  .js [data-reveal].in :is(.link-row, .def-row, .dir-row, .specimen, .project-tile) { transition-delay: 0s; }
+  /* The preview still loses its grey on hover — that's a colour change, not
+     motion — but it stops moving while it does it. */
+  .project-tile:hover .project-shot img,
+  .project-tile:focus-within .project-shot img { transform: none; }
   [data-parallax] { transform: none !important; }
 }
 

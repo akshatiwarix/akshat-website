@@ -38,7 +38,12 @@ var SITE = {
     'Writing by Akshat Tiwari, GTM Engineer — the work, the things he builds on the side, and what he is figuring out along the way.',
   blogIntro:
     'Notes on the work, the things I build on the side, and what I&rsquo;m figuring out along the way.',
-  blogEmpty: 'The first post is being written. Check back shortly.'
+  blogEmpty: 'The first post is being written. Check back shortly.',
+  projectsTitle: 'Projects — Akshat Tiwari, GTM Engineer',
+  projectsDescription:
+    'Deployed GTM tools by Akshat Tiwari: ICP scoring, an enrichment waterfall, record linkage, buying-committee mapping, and signal monitoring. Every one is live and clickable.',
+  projectsIntro:
+    'Every one of these is deployed and clickable. Open a tile, use the thing, then read the code &mdash; no clone, no setup, no talking to me first. Most of them are days out of a 100-day building challenge.'
 };
 
 var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
@@ -329,6 +334,7 @@ function formatRfc822(date) {
 var NAV = [
   { href: '/', label: 'Home', key: 'home' },
   { href: '/work/', label: 'Work', key: 'work' },
+  { href: '/projects/', label: 'Projects', key: 'projects' },
   { href: '/blog/', label: 'Blog', key: 'blog' },
   { href: '/beyond-work/', label: 'Beyond Work', key: 'beyond' },
   { href: '/contact/', label: 'Contact', key: 'contact' }
@@ -597,6 +603,119 @@ ${body}
 }
 
 // ---------------------------------------------------------------------------
+// Projects
+// ---------------------------------------------------------------------------
+//
+// projects.json is the source. Every tile previews a live demo with a
+// screenshot committed by scripts/shots.js, so a demo going down costs the
+// page freshness and nothing else.
+
+var PROJECTS_FILE = path.join(ROOT, 'projects.json');
+
+function readProjects() {
+  if (!fs.existsSync(PROJECTS_FILE)) return [];
+
+  var projects = JSON.parse(fs.readFileSync(PROJECTS_FILE, 'utf8'));
+
+  projects.forEach(function (project) {
+    ['slug', 'name', 'blurb', 'demo', 'repo', 'shot', 'alt'].forEach(function (key) {
+      if (!project[key]) {
+        throw new Error('projects.json: ' + (project.slug || '?') + ' is missing ' + key);
+      }
+    });
+  });
+
+  return projects;
+}
+
+// The chrome bar carries an address, not a URL: no scheme, no trailing slash.
+function displayHost(url) {
+  return url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+}
+
+function projectTile(project) {
+  var meta = [project.status, project.day].filter(Boolean).join(' · ');
+  var tags = (project.tags || []).map(function (tag) {
+    return '              <li>' + escapeHtml(tag) + '</li>';
+  }).join('\n');
+
+  return `        <article class="project-tile">
+          <p class="project-url">${escapeHtml(displayHost(project.demo))}</p>
+          <div class="project-shot">
+            <img src="${project.shot}" alt="${escapeHtml(project.alt)}"
+                 width="1600" height="1000" loading="lazy" decoding="async">
+          </div>
+          <div class="project-body">
+            <h3 class="project-name"><a href="${project.demo}" target="_blank" rel="noopener">${escapeHtml(project.name)}</a></h3>
+            <a class="project-repo" href="${project.repo}" target="_blank" rel="noopener">GitHub</a>
+            <p class="project-blurb">${escapeHtml(project.blurb)}</p>
+            <ul class="project-tags">
+${tags}
+            </ul>
+            <p class="project-meta">${escapeHtml(meta)}</p>
+          </div>
+        </article>`;
+}
+
+function projectGrid(projects) {
+  return `      <div class="project-grid">
+${projects.map(projectTile).join('\n')}
+      </div>`;
+}
+
+function renderProjects(projects) {
+  var gtm = projects.filter(function (p) { return p.group !== 'aside'; });
+  var aside = projects.filter(function (p) { return p.group === 'aside'; });
+
+  return head({
+    title: SITE.projectsTitle,
+    ogTitle: SITE.projectsTitle,
+    description: SITE.projectsDescription,
+    path: '/projects/',
+    nav: 'projects'
+  }) + `
+<main>
+  <section class="page-head container reveal sky">
+    <div class="prose">
+      <h1 class="page-title">Projects</h1>
+      <p>${SITE.projectsIntro}</p>
+    </div>
+  </section>
+
+  <div class="sheet">
+  <section class="section container" data-reveal>
+    <div class="section-head">
+      <p class="kicker">Shipped</p>
+      <h2>GTM systems</h2>
+    </div>
+${projectGrid(gtm)}
+  </section>${aside.length ? `
+
+  <section class="section container" data-reveal>
+    <div class="section-head">
+      <p class="kicker">Off the clock</p>
+      <h2>Not GTM</h2>
+    </div>
+${projectGrid(aside)}
+  </section>` : ''}
+  </div>
+
+  <section class="band">
+    <div class="container" data-reveal>
+      <p class="kicker">Get in touch</p>
+      <h2>Want to talk about any of these?</h2>
+      <p>If you're hiring for GTM engineering, or building in GTM and want to compare notes, I'm easy to reach. Either channel works, and I read both.</p>
+      <div class="hero-actions">
+        <a class="btn" href="/contact/">Contact</a>
+        <a class="btn" href="https://github.com/akshatiwarix">GitHub</a>
+      </div>
+    </div>
+  </section>
+</main>
+` + FOOT;
+}
+
+// ---------------------------------------------------------------------------
 // Homepage block
 // ---------------------------------------------------------------------------
 //
@@ -679,7 +798,7 @@ ${posts.map(function (post) {
 `;
 }
 
-var STATIC_PAGES = ['/', '/work/', '/blog/', '/beyond-work/', '/contact/'];
+var STATIC_PAGES = ['/', '/work/', '/projects/', '/blog/', '/beyond-work/', '/contact/'];
 
 function renderSitemap(posts) {
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -742,6 +861,12 @@ function main() {
 
   write(path.join('blog', 'index.html'), renderIndex(posts));
   write(path.join('blog', 'feed.xml'), renderFeed(posts));
+
+  var projects = readProjects();
+  if (projects.length) {
+    write(path.join('projects', 'index.html'), renderProjects(projects));
+  }
+
   write('sitemap.xml', renderSitemap(posts));
   write('robots.txt', renderRobots());
 

@@ -13,3 +13,6 @@ CONTEXT.md
 
 # Vercel
 .vercel/
+
+# Local authoring tooling
+node_modules/
