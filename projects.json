@@ -3,119 +3,71 @@
     "slug": "icp-score",
     "name": "ICP Score",
     "blurb": "Ranks companies against an ideal-customer profile and shows the arithmetic behind every score. Exclusions are hard filters, not heavy negative weights.",
-    "tags": [
-      "TypeScript",
-      "Deterministic",
-      "No LLM"
-    ],
     "demo": "https://icp-score.vercel.app",
     "repo": "https://github.com/akshatiwarix/icp-score",
     "shot": "/assets/projects/icp-score.webp",
     "alt": "The ICP Score interface: fifty companies ranked, with one row expanded to show its score breakdown",
-    "status": "Live",
-    "day": "Day 001",
     "group": "gtm"
   },
   {
     "slug": "enrichment-waterfall",
     "name": "Enrichment Waterfall",
     "blurb": "Finds a work email by trying providers in cost order, stopping at the first address that survives verification. Every attempt is recorded, with what it cost.",
-    "tags": [
-      "TypeScript",
-      "Deterministic",
-      "No LLM"
-    ],
     "demo": "https://enrichment-waterfall.vercel.app",
     "repo": "https://github.com/akshatiwarix/enrichment-waterfall",
     "shot": "/assets/projects/enrichment-waterfall.webp",
     "alt": "The Enrichment Waterfall interface: a run in progress showing each provider stage and its per-attempt cost",
-    "status": "Live",
-    "day": "Day 002",
     "group": "gtm"
   },
   {
     "slug": "signal-scout",
     "name": "Signal Scout",
     "blurb": "Derives account events by diffing dated observations of the same company, then ages them, so the board answers who to touch today rather than what happened.",
-    "tags": [
-      "TypeScript",
-      "Time decay",
-      "No LLM"
-    ],
     "demo": "https://signal-scout-weld.vercel.app",
     "repo": "https://github.com/akshatiwarix/signal-scout",
     "shot": "/assets/projects/signal-scout.webp",
     "alt": "The Signal Scout interface: a daily priority board of accounts ranked by decayed signal strength",
-    "status": "Live",
-    "day": "Day 005",
     "group": "gtm"
   },
   {
     "slug": "lead-cleaner",
     "name": "Lead Cleaner",
     "blurb": "Record linkage for messy lead and CRM data: tiered matching, constrained clustering, and a field-level receipt for every merge.",
-    "tags": [
-      "TypeScript",
-      "Record linkage",
-      "No LLM"
-    ],
     "demo": "https://lead-cleaner-smoky.vercel.app",
     "repo": "https://github.com/akshatiwarix/lead-cleaner",
     "shot": "/assets/projects/lead-cleaner.webp",
     "alt": "The Lead Cleaner review queue: candidate duplicate records with a match threshold slider",
-    "status": "Live",
-    "day": "Day 003",
     "group": "gtm"
   },
   {
     "slug": "persona-mapper",
     "name": "Persona Mapper",
     "blurb": "A company and an offer go in; a buying committee comes out — titles that exist at that headcount, with an authority ladder tied to deal size.",
-    "tags": [
-      "TypeScript",
-      "Deterministic",
-      "No LLM"
-    ],
     "demo": "https://persona-mapper.vercel.app",
     "repo": "https://github.com/akshatiwarix/persona-mapper",
     "shot": "/assets/projects/persona-mapper.webp",
     "alt": "The Persona Mapper interface: a generated buying committee for one company and offer",
-    "status": "Live",
-    "day": "Day 004",
     "group": "gtm"
   },
   {
     "slug": "why-now",
     "name": "Why Now",
     "blurb": "Turns dated company evidence into a \"why now\" hypothesis where every step is licensed by a declared rule, or the chain visibly breaks where it failed.",
-    "tags": [
-      "TypeScript",
-      "Rule-licensed",
-      "Synthetic corpus"
-    ],
     "demo": "https://why-now.vercel.app",
     "repo": "https://github.com/akshatiwarix/why-now",
     "shot": "/assets/projects/why-now.webp",
     "alt": "The Why Now interface: an inference chain with each step licensed by a named rule",
-    "status": "Live",
-    "day": "Day 007",
     "group": "gtm"
   },
   {
     "slug": "girth-of-nations",
     "name": "Girth of Nations",
     "blurb": "An infinite canvas of ~196 countries that inflate and deflate as strangers drop emoji on them. No accounts, no posts, six emoji.",
-    "tags": [
-      "TypeScript",
-      "Cloudflare Workers",
-      "Realtime"
-    ],
     "demo": "https://girth-of-nations.doorhandles.workers.dev/",
     "repo": "https://github.com/akshatiwarix/girth-of-nations",
     "shot": "/assets/projects/girth-of-nations.webp",
     "alt": "The Girth of Nations canvas: country shapes scaled by how many emoji strangers have dropped on them",
     "dismiss": "Start dropping",
-    "status": "Live",
     "group": "aside"
   }
 ]

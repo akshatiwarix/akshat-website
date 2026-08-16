@@ -1143,9 +1143,9 @@ main h3 a { font-weight: 400; }
 
 /* ---------- Projects grid ---------- */
 
-/* Each tile is a website in miniature: a hairline chrome bar carrying the
-   address, then the screenshot, then the words. Grey at rest so the page keeps
-   its monochrome discipline; hover restores the app's own colour. */
+/* Each tile is a screenshot of the running app over its name and one line about
+   it. Grey at rest so the page keeps its monochrome discipline; hover restores
+   the app's own colour. */
 
 .project-grid {
   display: grid;
@@ -1165,21 +1165,6 @@ main h3 a { font-weight: 400; }
 .project-tile:hover,
 .project-tile:focus-within { border-color: var(--color-ink); }
 
-/* Lowercase and lightly tracked rather than the usual kicker treatment: a URL
-   in capitals stops reading as a URL. */
-.project-url {
-  margin: 0;
-  padding: var(--space-3) var(--space-4);
-  font-family: var(--font-body);
-  font-size: var(--text-kicker);
-  letter-spacing: 0.08em;
-  color: var(--color-gray);
-  border-bottom: 1px solid var(--color-mist);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 .project-shot {
   overflow: hidden;
   aspect-ratio: 16 / 10;
@@ -1193,23 +1178,25 @@ main h3 a { font-weight: 400; }
   height: 100%;
   object-fit: cover;
   object-position: top center;
-  filter: grayscale(1);
+  filter: grayscale(1) brightness(var(--shot-dim, 1));
   transition: filter var(--duration-material) ease,
               transform var(--duration-material) var(--ease-out);
 }
 
 .project-tile:hover .project-shot img,
 .project-tile:focus-within .project-shot img {
-  filter: grayscale(0);
+  filter: grayscale(0) brightness(1);
   transform: scale(1.03);
 }
 
 /* Most of these apps have light interfaces, so on a black page a resting tile
-   would be a slab of white. Dim it at rest; hover brings it all the way up. */
-:root[data-theme="dark"] .project-shot img { filter: grayscale(1) brightness(0.78); }
+   would be a slab of white. The dim rides a token rather than its own filter
+   declaration: an equally specific rule further down the file would otherwise
+   outrank the hover above and the colour would never come back. */
+:root[data-theme="dark"] { --shot-dim: 0.78; }
 
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) .project-shot img { filter: grayscale(1) brightness(0.78); }
+  :root:not([data-theme]) { --shot-dim: 0.78; }
 }
 
 .project-body {
@@ -1218,7 +1205,7 @@ main h3 a { font-weight: 400; }
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  padding: var(--space-6) var(--space-4) var(--space-4);
+  padding: var(--space-6) var(--space-4);
 }
 
 .project-name {
@@ -1264,33 +1251,6 @@ main h3 a { font-weight: 400; }
   line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-.project-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.project-tags li {
-  padding: 0.125rem var(--space-3);
-  font-size: var(--text-caption);
-  letter-spacing: var(--track-small);
-  color: var(--color-gray);
-  border: 1px solid var(--color-mist);
-  border-radius: var(--radius-pill);
-}
-
-/* auto top margin pins the status line to the bottom, so tiles with shorter
-   copy still line their last row up with their neighbours. */
-.project-meta {
-  margin: auto 0 0;
-  font-size: var(--text-caption);
-  letter-spacing: var(--track-small);
-  color: var(--color-gray);
 }
 
 /* ---------- Specimen grid (Beyond Work) ---------- */
