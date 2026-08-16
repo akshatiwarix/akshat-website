@@ -1563,6 +1563,10 @@ main h3 a { font-weight: 400; }
   margin-bottom: var(--space-3);
 }
 
+/* An explicit display always beats the user agent's [hidden] rule, so the name
+   field the author never fills would otherwise stay on screen. */
+.comments [hidden] { display: none; }
+
 .comment-field::placeholder { color: var(--color-gray); }
 .comment-field:focus { outline: none; border-color: var(--color-ink); }
 .comment-body { resize: vertical; min-height: 7rem; }
