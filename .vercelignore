@@ -10,3 +10,11 @@ skills-lock.json
 posts/
 build.js
 WRITING.md
+
+# Local authoring tooling for the project previews. Vercel serves committed
+# HTML and runs no build; shipping a package.json would make it try to.
+package.json
+package-lock.json
+node_modules/
+scripts/
+projects.json

@@ -86,6 +86,7 @@
     "repo": "https://github.com/akshatiwarix/girth-of-nations",
     "shot": "/assets/projects/girth-of-nations.webp",
     "alt": "The Girth of Nations canvas: country shapes scaled by how many emoji strangers have dropped on them",
+    "dismiss": "Start dropping",
     "status": "Live",
     "group": "aside"
   }
