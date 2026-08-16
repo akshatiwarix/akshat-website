@@ -20,7 +20,7 @@ That means a public artifact — a repo they can open, code they can run, a data
 
 | Counts | Doesn't count |
 |---|---|
-| Public repo with a README and runnable code | "I built an outbound engine at Ollive" |
+| Public repo with a README and runnable code | "I built an outbound engine at work" |
 | A dataset someone can download and audit | A screenshot of a dashboard |
 | A scoring model with its rubric written down | "Reply rates went up" |
 | A writeup of a method with the code beside it | A tool logo |
@@ -42,7 +42,7 @@ Work through this list first. A repo that fails any of these is worse than no li
 2. **README explains what it is in the first two sentences** — assume the reader is a hiring manager with forty seconds, not an engineer who will read the source.
 3. **It runs.** Fresh clone, documented setup, one command. Test it in a clean directory before you link it.
 4. **A license file exists.** MIT is fine.
-5. **No Ollive anything.** No customer names, no account lists, no ICP internals, no prompts, no exported data. If the code touches an Ollive system, it does not go in this repo. Rebuild the piece you want to show against public data.
+5. **No employer anything — GoodBox now, Ollive before it.** No customer names, no account lists, no ICP internals, no prompts, no exported data. If the code touches an employer's system, it does not go in this repo. Rebuild the piece you want to show against public data.
 6. **No credentials in the history.** Check every commit, not just the current tree — `git log -p` and grep for keys.
 7. **Every dataset row has a working citation link.** "Evidence-linked" is the whole claim. One dead link undoes it.
 
@@ -68,8 +68,8 @@ Replace all of that with the real thing. Do not ship the example.
 
 ## 6. Rules that don't bend
 
-- **No performance metrics anywhere.** No reply rates, no pipeline numbers, no multiples. Those belong to Ollive and are not yours to publish. Describe scope and architecture instead — for engineering roles that reads better anyway.
-- **No Ollive customer, account, prompt, or ICP internal.** Naming the industry ("liability insurance") is fine. Naming carriers, brokers, or buyers is not.
+- **No performance metrics anywhere.** No reply rates, no pipeline numbers, no multiples. Those belong to the employer — GoodBox now, Ollive before it — and are not yours to publish. Describe scope and architecture instead — for engineering roles that reads better anyway.
+- **No employer customer, account, prompt, or ICP internal.** Naming the industry ("liability insurance", "conversational AI") is fine. Naming carriers, brokers, or buyers is not, and the same goes for GoodBox's accounts.
 - **Systems lead, tools follow.** "I build enrichment pipelines with evidence-linked provenance", not "I use Clay and Apollo". The tool list appears exactly once on the site, at the bottom of `/work`, and this section must not become a second copy of it.
 - **Don't reintroduce a cut tool** in prose: Zapier, n8n, Airtable, FullEnrich, Granola, Git, Linear, Figma.
 
@@ -101,7 +101,7 @@ Then, in the browser or via the browse skill:
 
 ## 9. Keep the other surfaces in step
 
-Once the section is live, four surfaces have to agree — the site, LinkedIn, the resume, and whatever the Ollive cofounder has confirmed in writing.
+Once the section is live, four surfaces have to agree — the site, LinkedIn, the resume, and whatever the employer has confirmed in writing.
 
 - Add the same three-block story to `COPY.md` so the draft copy stops lying about what's on the page.
 - Add one line to the resume's experience or projects section with the repo URL.
