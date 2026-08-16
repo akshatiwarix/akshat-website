@@ -531,11 +531,46 @@ function renderPost(post) {
 ${post.html}
   </article>
 
+  <section class="section container comments" data-reveal data-slug="${post.slug}" data-title="${escapeHtml(post.title)}">
+    <div class="prose">
+      <button class="like" type="button" data-like aria-pressed="false">
+        <span class="like-mark" aria-hidden="true">&#9825;</span>
+        <span class="like-count" data-like-count>&nbsp;</span>
+        <span class="visually-hidden">Like this post</span>
+      </button>
+
+      <p class="kicker" data-comment-count>Comments</p>
+
+      <form class="comment-form" data-comment-form novalidate>
+        <label class="visually-hidden" for="comment-name">Name</label>
+        <input class="comment-field" id="comment-name" name="name" type="text"
+               maxlength="60" placeholder="Name" autocomplete="name" required>
+
+        <label class="visually-hidden" for="comment-body">Comment</label>
+        <textarea class="comment-field comment-body" id="comment-body" name="body" rows="4"
+                  maxlength="2000" placeholder="Say something" required></textarea>
+
+        <div class="comment-trap" aria-hidden="true">
+          <label for="comment-website">Website</label>
+          <input id="comment-website" name="hp" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="comment-actions">
+          <p class="comment-status" data-comment-status role="status"></p>
+          <button class="btn" type="submit">Post</button>
+        </div>
+      </form>
+
+      <ol class="comment-list" data-comment-list></ol>
+    </div>
+  </section>
+
   <section class="section container" data-reveal>
     <a class="post-back" href="/blog/"><span class="post-back-arrow" aria-hidden="true">&larr;</span>All posts</a>
   </section>
   </div>
 </main>
+<script src="/comments.js" defer></script>
 ` + FOOT;
 }
 

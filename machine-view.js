@@ -48,7 +48,11 @@
 
   // The clocks are an instrument, not writing: a crawler fetching the HTML gets
   // a placeholder, and the zone labels around them only describe the widget.
-  var NOT_CONTENT = '.telemetry';
+  //
+  // Comments are writing, but they are not his: machine view is the words on
+  // the page as authored, and the CONTENT selector would otherwise read every
+  // visitor's paragraph into the readout.
+  var NOT_CONTENT = '.telemetry, .comments';
 
   function readContent() {
     var main = document.querySelector('main');
