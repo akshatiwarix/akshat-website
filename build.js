@@ -413,7 +413,7 @@ ${NAV.map(function (item) {
 var FOOT = `
 <footer class="site-footer">
   <div class="container">
-    <p class="kicker">Kanpur, India</p>
+    <p class="kicker">Bangalore, India</p>
     <div class="footer-links">
       <a href="mailto:pi4akshat@gmail.com">Email</a>
       <a href="https://www.linkedin.com/in/akshatiwari/">LinkedIn</a>
