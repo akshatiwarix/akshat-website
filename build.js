@@ -331,6 +331,11 @@ function formatRfc822(date) {
 // Byte-identical to the shell the four hand-written pages use. If that shell
 // changes there, it changes here too — these are the same document.
 
+// The projects page is hidden for now. Flip this to true to bring back the nav
+// link, the /projects/ build step and the sitemap entry; the four hand-written
+// pages carry the same link in their own nav and have to be un-hidden by hand.
+var SHOW_PROJECTS = false;
+
 var NAV = [
   { href: '/', label: 'Home', key: 'home' },
   { href: '/work/', label: 'Work', key: 'work' },
@@ -338,7 +343,7 @@ var NAV = [
   { href: '/blog/', label: 'Blog', key: 'blog' },
   { href: '/beyond-work/', label: 'Beyond Work', key: 'beyond' },
   { href: '/contact/', label: 'Contact', key: 'contact' }
-];
+].filter(function (item) { return SHOW_PROJECTS || item.key !== 'projects'; });
 
 function head(opts) {
   return `<!doctype html>
@@ -818,7 +823,8 @@ ${posts.map(function (post) {
 `;
 }
 
-var STATIC_PAGES = ['/', '/work/', '/projects/', '/blog/', '/beyond-work/', '/contact/'];
+var STATIC_PAGES = ['/', '/work/', '/projects/', '/blog/', '/beyond-work/', '/contact/']
+  .filter(function (page) { return SHOW_PROJECTS || page !== '/projects/'; });
 
 function renderSitemap(posts) {
   return `<?xml version="1.0" encoding="UTF-8"?>
@@ -882,7 +888,7 @@ function main() {
   write(path.join('blog', 'index.html'), renderIndex(posts));
   write(path.join('blog', 'feed.xml'), renderFeed(posts));
 
-  var projects = readProjects();
+  var projects = SHOW_PROJECTS ? readProjects() : [];
   if (projects.length) {
     write(path.join('projects', 'index.html'), renderProjects(projects));
   }
