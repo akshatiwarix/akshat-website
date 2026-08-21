@@ -25,6 +25,11 @@
 
   var replyingTo = null;
 
+  // Set by a successful post, consumed by the next render(): the comment that
+  // just landed gets a one-shot entrance, so a reader sees their own words
+  // arrive instead of teleporting into a fully re-rendered list.
+  var enterId = null;
+
   // ---------- storage, defensively ----------
 
   // Safari in private mode throws on localStorage rather than returning null.
@@ -147,15 +152,32 @@
     }
 
     comments.forEach(function (comment) { list.appendChild(renderComment(comment, false)); });
+
+    if (enterId !== null) {
+      var entered = document.getElementById('comment-' + enterId) ||
+                    list.lastElementChild;
+      if (entered) entered.classList.add('comment-enter');
+      enterId = null;
+    }
   }
 
   // ---------- reply ----------
 
   // Replying moves the one form under the comment being answered, so there is
-  // never a second form on the page to keep in sync.
+  // never a second form on the page to keep in sync. The move is bridged by a
+  // quick fade so the form doesn't vanish and reappear elsewhere.
+  function moveForm(parent, before) {
+    form.classList.add('is-moving');
+    window.setTimeout(function () {
+      if (before) parent.insertBefore(form, before);
+      else parent.appendChild(form);
+      form.classList.remove('is-moving');
+    }, 130);
+  }
+
   function startReply(comment, item) {
     replyingTo = comment.id;
-    item.appendChild(form);
+    moveForm(item, null);
     form.classList.add('is-replying');
     setStatus('Replying to ' + comment.name + '.', false);
     ensureCancel();
@@ -176,7 +198,7 @@
     form.classList.remove('is-replying');
     var cancel = form.querySelector('[data-cancel-reply]');
     if (cancel) cancel.parentNode.removeChild(cancel);
-    root.querySelector('.prose').insertBefore(form, list);
+    moveForm(root.querySelector('.prose'), list);
     setStatus('', false);
   }
 
@@ -250,6 +272,7 @@
       form.querySelector('.comment-body').value = '';
       endReply();
       setStatus('Posted.', false);
+      enterId = data.id;
       await load();
     } catch (err) {
       setStatus(err.message, true);
@@ -293,6 +316,12 @@
     }
   }
 
+  // The pop runs once per click, not once per page load for everyone who has
+  // already liked the post, so it rides a class that only the click adds.
+  likeButton.addEventListener('animationend', function () {
+    likeButton.classList.remove('just-liked');
+  });
+
   likeButton.addEventListener('click', async function () {
     if (stored(LIKED_KEY) === '1') return;
 
@@ -307,6 +336,7 @@
       var data = await response.json();
       store(LIKED_KEY, '1');
       paintLike(data.likes || 0, true);
+      likeButton.classList.add('just-liked');
     } catch (err) {
       setStatus('That like did not save.', true);
     } finally {
