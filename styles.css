@@ -1540,14 +1540,36 @@ main h3 a { font-weight: 400; }
   padding: var(--space-2) var(--space-4);
   cursor: pointer;
   margin-bottom: var(--space-12);
-  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease,
+              transform var(--duration-press) var(--ease-out);
+}
+
+.like:active { transform: scale(0.96); }
+
+/* A one-shot pop on the click that likes; is-liked alone would replay the
+   animation on every page load for a returning reader. */
+.like-mark { display: inline-block; }
+.like.just-liked .like-mark {
+  animation: like-pop 0.25s var(--ease-out);
+}
+
+@keyframes like-pop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.3); }
+  100% { transform: scale(1); }
 }
 
 .like:hover { border-color: var(--color-gray); background: var(--color-tint-hover); }
 .like.is-liked { border-color: var(--color-ink); background: var(--color-ink); color: var(--color-paper); }
 .like[disabled] { opacity: 0.5; cursor: default; }
 
-.comment-form { margin-bottom: var(--space-12); }
+/* The form fades out while it is moved under the comment being answered, and
+   back in once it lands — the move itself is instant, the bridge is not. */
+.comment-form {
+  margin-bottom: var(--space-12);
+  transition: opacity 0.12s var(--ease-out);
+}
+.comment-form.is-moving { opacity: 0; }
 .comment-form.is-replying { margin-top: var(--space-6); margin-bottom: 0; }
 
 .comment-field {
@@ -1655,6 +1677,16 @@ main h3 a { font-weight: 400; }
 .comment-replies .comment:first-child { margin-top: 0; }
 
 .comment-empty { color: var(--color-gray); padding-top: var(--space-6); }
+
+/* The visitor's own comment, bridged in after the list re-renders. */
+.comment-enter {
+  animation: comment-in 0.3s var(--ease-out) both;
+}
+
+@keyframes comment-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 
 /* High contrast: near-solid surfaces with defined borders, and muted grey stops
    being grey. */
